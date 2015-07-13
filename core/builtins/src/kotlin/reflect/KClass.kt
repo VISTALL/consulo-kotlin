@@ -43,4 +43,9 @@ public interface KClass<T> : KDeclarationContainer {
      * declared in this class and all of its superclasses.
      */
     public val members: Collection<KCallable<*>>
+
+    /**
+     * All constructors declared in this class.
+     */
+    public val constructors: Collection<KFunction<T>>
 }
