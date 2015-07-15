@@ -42,7 +42,7 @@ public interface KClass<T> : KDeclarationContainer {
      * All elements accessible in this class, including functions and properties
      * declared in this class and all of its superclasses.
      */
-    public val members: Collection<KCallable<*>>
+    override val members: Collection<KCallable<*>>
 
     /**
      * All constructors declared in this class.
