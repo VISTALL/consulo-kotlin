@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.serialization.deserialization.descriptors.Deserializ
 import org.jetbrains.kotlin.serialization.jvm.JvmProtoBuf
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
+import java.lang.reflect.Modifier
 import kotlin.jvm.internal.FunctionImpl
 import kotlin.reflect.*
 
@@ -68,7 +69,7 @@ open class KFunctionImpl protected constructor(
     }
 
     internal val javaMethod: Method? by ReflectProperties.lazySoft {
-        if (name != "<init>") {
+        if (!isConstructor) {
             val proto = protoData
             if (proto != null) {
                 container.findMethodBySignature(proto.proto, proto.signature, proto.nameResolver,
@@ -82,7 +83,7 @@ open class KFunctionImpl protected constructor(
     }
 
     internal val javaConstructor: Constructor<*>? by ReflectProperties.lazySoft {
-        if (name == "<init>") {
+        if (isConstructor) {
             val proto = protoData
             if (proto != null) {
                 return@lazySoft container.findConstructorBySignature(
@@ -97,6 +98,23 @@ open class KFunctionImpl protected constructor(
     }
 
     override val name: String get() = descriptor.getName().asString()
+
+    // TODO: return Unit if function returns void
+    override fun call(vararg args: Any?): Any? {
+        if (isConstructor) {
+            val constructor = javaConstructor ?: throw KotlinReflectionInternalError("Unresolved constructor: $descriptor")
+            return constructor.newInstance(*args)
+        }
+
+        val method = javaMethod ?: throw KotlinReflectionInternalError("Unresolved method: $descriptor")
+        if (Modifier.isStatic(method.modifiers)) {
+            return method.invoke(null, *args)
+        }
+
+        return method.invoke(args.first(), *args.asList().subList(1, args.size()).toTypedArray())
+    }
+
+    private val isConstructor: Boolean get() = name == "<init>"
 
     override fun getArity(): Int {
         // TODO: test?
