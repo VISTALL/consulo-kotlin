@@ -41,27 +41,28 @@ public object JavaAnnotationMapper {
 
     public fun mapJavaAnnotation(annotation: JavaAnnotation, c: LazyJavaResolverContext): AnnotationDescriptor? =
             when (annotation.classId?.let { JavaToKotlinClassMap.INSTANCE.mapJavaToKotlin(it.asSingleFqName()) } ) {
-                c.module.builtIns.targetAnnotation -> JavaTargetAnnotationDescriptor(annotation, c.module.builtIns.targetAnnotation)
+                c.module.builtIns.targetAnnotation -> JavaTargetAnnotationDescriptor(annotation, c.module.builtIns)
                 else -> c.resolveAnnotation(annotation)
             }
 }
 
-class JavaTargetAnnotationDescriptor(annotation: JavaAnnotation, targetDescriptor: ClassDescriptor): AnnotationDescriptor {
+class JavaTargetAnnotationDescriptor(annotation: JavaAnnotation, builtIns: KotlinBuiltIns)
+    : AnnotationDescriptor {
 
     private val valueArguments by lazy {
         val first = annotation.arguments.firstOrNull()
         val targetArgument = when (first) {
-            is JavaArrayAnnotationArgument -> JavaAnnotationTargetMapper.mapJavaTargetArguments(first.getElements())
-            is JavaEnumValueAnnotationArgument -> JavaAnnotationTargetMapper.mapJavaTargetArguments(listOf(first))
+            is JavaArrayAnnotationArgument -> JavaAnnotationTargetMapper.mapJavaTargetArguments(first.getElements(), builtIns)
+            is JavaEnumValueAnnotationArgument -> JavaAnnotationTargetMapper.mapJavaTargetArguments(listOf(first), builtIns)
             else -> return@lazy emptyMap<ValueParameterDescriptor, ConstantValue<*>>()
         }
-        val parameterDescriptor = targetDescriptor.constructors.firstOrNull()?.valueParameters?.firstOrNull()
+        val parameterDescriptor = builtIns.targetAnnotation.constructors.firstOrNull()?.valueParameters?.firstOrNull()
         parameterDescriptor?.let { mapOf(it to targetArgument) } ?: emptyMap()
     }
 
     override fun getAllValueArguments() = valueArguments
 
-    private val type = targetDescriptor.defaultType
+    private val type = builtIns.targetAnnotation.defaultType
 
     override fun getType() = type
 }
@@ -83,9 +84,9 @@ public object JavaAnnotationTargetMapper {
 
     public fun mapJavaTargetArgumentByName(argumentName: String?): Set<AnnotationTarget> = targetNameLists[argumentName] ?: emptySet()
 
-    public fun mapJavaTargetArguments(elements: List<JavaAnnotationArgument>): ConstantValue<*>? {
+    public fun mapJavaTargetArguments(elements: List<JavaAnnotationArgument>, builtIns: KotlinBuiltIns): ConstantValue<*>? {
         // Generate kotlin.annotation.target, map arguments
-        val kotlinAnnotationTargetClassDescriptor = KotlinBuiltIns.getInstance().annotationTargetEnum
+        val kotlinAnnotationTargetClassDescriptor = builtIns.annotationTargetEnum
         val kotlinTargets = ArrayList<ConstantValue<*>>()
         elements.filterIsInstance<JavaEnumValueAnnotationArgument>().forEach {
             mapJavaTargetArgumentByName(it.resolve()?.name?.asString()).forEach {
@@ -96,7 +97,7 @@ public object JavaAnnotationTargetMapper {
             }
         }
         val parameterDescriptor = DescriptorResolverUtils.getAnnotationParameterByName(JvmAnnotationNames.TARGET_ANNOTATION_MEMBER_NAME,
-                                                                                       KotlinBuiltIns.getInstance().targetAnnotation)
+                                                                                       builtIns.targetAnnotation)
         return ArrayValue(kotlinTargets, parameterDescriptor?.type ?: ErrorUtils.createErrorType("Error: AnnotationTarget[]"))
     }
 }
