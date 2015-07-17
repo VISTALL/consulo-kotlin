@@ -20,13 +20,16 @@ import com.intellij.codeInsight.NullableNotNullManager
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.*
 import com.intellij.psi.javadoc.PsiDocTag
+import org.jetbrains.kotlin.descriptors.annotations.AnnotationTarget
 import org.jetbrains.kotlin.j2k.ast.*
 import org.jetbrains.kotlin.j2k.ast.Annotation
+import org.jetbrains.kotlin.load.java.components.JavaAnnotationTargetMapper
+import java.lang.annotation.ElementType
 
 class AnnotationConverter(private val converter: Converter) {
     public val annotationsToRemove: Set<String> = (NullableNotNullManager.getInstance(converter.project).getNotNulls()
             + NullableNotNullManager.getInstance(converter.project).getNullables()
-            + listOf(CommonClassNames.JAVA_LANG_OVERRIDE)).toSet()
+            + listOf(CommonClassNames.JAVA_LANG_OVERRIDE, javaClass<ElementType>().name)).toSet()
 
     public fun convertAnnotations(owner: PsiModifierListOwner): Annotations
             = convertAnnotationsOnly(owner) + convertModifiersToAnnotations(owner)
@@ -88,11 +91,43 @@ class AnnotationConverter(private val converter: Converter) {
             PsiModifier.TRANSIENT to "transient"
     )
 
+    private fun mapTargetByName(name: String): Set<AnnotationTarget> {
+        val shortName = name.substring(name.lastIndexOf(".") + 1)
+        return JavaAnnotationTargetMapper.mapJavaTargetArgumentByName(shortName)
+    }
+
     public fun convertAnnotation(annotation: PsiAnnotation, withAt: Boolean, newLineAfter: Boolean): Annotation? {
         val qualifiedName = annotation.getQualifiedName()
         if (qualifiedName == CommonClassNames.JAVA_LANG_DEPRECATED && annotation.getParameterList().getAttributes().isEmpty()) {
             val deferredExpression = converter.deferredElement<Expression> { LiteralExpression("\"\"").assignNoPrototype() }
             return Annotation(Identifier("deprecated").assignNoPrototype(), listOf(null to deferredExpression), withAt, newLineAfter).assignPrototype(annotation) //TODO: insert comment
+        }
+        if (qualifiedName == CommonClassNames.JAVA_LANG_ANNOTATION_TARGET) {
+            val attributes = annotation.parameterList.attributes
+            val arguments: Set<AnnotationTarget>
+            if (attributes.isEmpty()) {
+                arguments = setOf<AnnotationTarget>()
+            }
+            else {
+                val value = attributes[0].value
+                arguments = when (value) {
+                    is PsiArrayInitializerMemberValue -> value.getInitializers().map {
+                        mapTargetByName(it.text)
+                    }.flatten().toSet()
+                    is PsiReferenceExpression -> mapTargetByName(value.text)
+                    else -> setOf<AnnotationTarget>()
+                }
+            }
+            val deferredExpression = converter.deferredElement<Expression> {
+                object: Expression() {
+                    override fun generateCode(builder: CodeBuilder) {
+                        builder.append(arguments.map { "AnnotationTarget." + it.name() }.join(", "))
+                    }
+                }.assignNoPrototype()
+            }
+            return Annotation(Identifier("target").assignNoPrototype(),
+                              listOf(null to deferredExpression),
+                              withAt, newLineAfter).assignPrototype(annotation)
         }
 
         val nameRef = annotation.getNameReferenceElement()
