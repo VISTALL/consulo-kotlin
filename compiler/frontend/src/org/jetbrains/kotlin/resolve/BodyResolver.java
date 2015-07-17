@@ -45,7 +45,6 @@ import org.jetbrains.kotlin.util.Box;
 import org.jetbrains.kotlin.util.ReenteringLazyValueComputationException;
 import org.jetbrains.kotlin.util.slicedMap.WritableSlice;
 
-import javax.inject.Inject;
 import java.util.*;
 
 import static org.jetbrains.kotlin.descriptors.ReceiverParameterDescriptor.NO_RECEIVER_PARAMETER;
@@ -54,80 +53,46 @@ import static org.jetbrains.kotlin.resolve.BindingContext.*;
 import static org.jetbrains.kotlin.types.TypeUtils.NO_EXPECTED_TYPE;
 
 public class BodyResolver {
-    private ScriptBodyResolver scriptBodyResolverResolver;
-    private ExpressionTypingServices expressionTypingServices;
-    private CallResolver callResolver;
-    private ObservableBindingTrace trace;
-    private ControlFlowAnalyzer controlFlowAnalyzer;
-    private DeclarationsChecker declarationsChecker;
-    private AnnotationResolver annotationResolver;
-    private DelegatedPropertyResolver delegatedPropertyResolver;
-    private FunctionAnalyzerExtension functionAnalyzerExtension;
-    private AdditionalCheckerProvider additionalCheckerProvider;
-    private ValueParameterResolver valueParameterResolver;
-    private BodyResolveCache bodyResolveCache;
+    private final ScriptBodyResolver scriptBodyResolverResolver;
+    private final ExpressionTypingServices expressionTypingServices;
+    private final CallResolver callResolver;
+    private final ObservableBindingTrace trace;
+    private final ControlFlowAnalyzer controlFlowAnalyzer;
+    private final DeclarationsChecker declarationsChecker;
+    private final AnnotationResolver annotationResolver;
+    private final DelegatedPropertyResolver delegatedPropertyResolver;
+    private final FunctionAnalyzerExtension functionAnalyzerExtension;
+    private final AdditionalCheckerProvider additionalCheckerProvider;
+    private final ValueParameterResolver valueParameterResolver;
+    private final BodyResolveCache bodyResolveCache;
 
-    //<editor-fold desc="Injector Setters">
-    @Inject
-    public void setScriptBodyResolverResolver(@NotNull ScriptBodyResolver scriptBodyResolverResolver) {
-        this.scriptBodyResolverResolver = scriptBodyResolverResolver;
-    }
-
-    @Inject
-    public void setExpressionTypingServices(@NotNull ExpressionTypingServices expressionTypingServices) {
-        this.expressionTypingServices = expressionTypingServices;
-    }
-
-    @Inject
-    public void setCallResolver(@NotNull CallResolver callResolver) {
-        this.callResolver = callResolver;
-    }
-
-    @Inject
-    public void setTrace(@NotNull BindingTrace trace) {
-        this.trace = new ObservableBindingTrace(trace);
-    }
-
-    @Inject
-    public void setControlFlowAnalyzer(@NotNull ControlFlowAnalyzer controlFlowAnalyzer) {
-        this.controlFlowAnalyzer = controlFlowAnalyzer;
-    }
-
-    @Inject
-    public void setDeclarationsChecker(@NotNull DeclarationsChecker declarationsChecker) {
-        this.declarationsChecker = declarationsChecker;
-    }
-
-    @Inject
-    public void setAnnotationResolver(@NotNull AnnotationResolver annotationResolver) {
-        this.annotationResolver = annotationResolver;
-    }
-
-    @Inject
-    public void setDelegatedPropertyResolver(@NotNull DelegatedPropertyResolver delegatedPropertyResolver) {
-        this.delegatedPropertyResolver = delegatedPropertyResolver;
-    }
-
-    @Inject
-    public void setFunctionAnalyzerExtension(@NotNull FunctionAnalyzerExtension functionAnalyzerExtension) {
-        this.functionAnalyzerExtension = functionAnalyzerExtension;
-    }
-
-    @Inject
-    public void setAdditionalCheckerProvider(AdditionalCheckerProvider additionalCheckerProvider) {
+    public BodyResolver(
+            AdditionalCheckerProvider additionalCheckerProvider,
+            AnnotationResolver annotationResolver,
+            BodyResolveCache bodyResolveCache,
+            CallResolver callResolver,
+            ControlFlowAnalyzer controlFlowAnalyzer,
+            DeclarationsChecker declarationsChecker,
+            DelegatedPropertyResolver delegatedPropertyResolver,
+            ExpressionTypingServices expressionTypingServices,
+            FunctionAnalyzerExtension functionAnalyzerExtension,
+            ScriptBodyResolver scriptBodyResolverResolver,
+            BindingTrace trace,
+            ValueParameterResolver valueParameterResolver
+    ) {
         this.additionalCheckerProvider = additionalCheckerProvider;
-    }
-
-    @Inject
-    public void setValueParameterResolver(ValueParameterResolver valueParameterResolver) {
+        this.annotationResolver = annotationResolver;
+        this.bodyResolveCache = bodyResolveCache;
+        this.callResolver = callResolver;
+        this.controlFlowAnalyzer = controlFlowAnalyzer;
+        this.declarationsChecker = declarationsChecker;
+        this.delegatedPropertyResolver = delegatedPropertyResolver;
+        this.expressionTypingServices = expressionTypingServices;
+        this.functionAnalyzerExtension = functionAnalyzerExtension;
+        this.scriptBodyResolverResolver = scriptBodyResolverResolver;
+        this.trace = new ObservableBindingTrace(trace);
         this.valueParameterResolver = valueParameterResolver;
     }
-
-    @Inject
-    public void setBodyResolveCache(BodyResolveCache bodyResolveCache) {
-        this.bodyResolveCache = bodyResolveCache;
-    }
-    //</editor-fold>
 
     private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext c) {
         resolveDelegationSpecifierLists(c);

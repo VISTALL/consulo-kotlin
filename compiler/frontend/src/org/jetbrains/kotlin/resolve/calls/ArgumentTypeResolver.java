@@ -46,7 +46,6 @@ import org.jetbrains.kotlin.types.expressions.ExpressionTypingServices;
 import org.jetbrains.kotlin.types.expressions.JetTypeInfo;
 import org.jetbrains.kotlin.types.expressions.typeInfoFactory.TypeInfoFactoryPackage;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,23 +60,18 @@ import static org.jetbrains.kotlin.types.TypeUtils.NO_EXPECTED_TYPE;
 
 public class ArgumentTypeResolver {
 
-    private TypeResolver typeResolver;
-    private ExpressionTypingServices expressionTypingServices;
-    private KotlinBuiltIns builtIns;
+    private final TypeResolver typeResolver;
+    private final ExpressionTypingServices expressionTypingServices;
+    private final KotlinBuiltIns builtIns;
 
-    @Inject
-    public void setTypeResolver(@NotNull TypeResolver typeResolver) {
-        this.typeResolver = typeResolver;
-    }
-
-    @Inject
-    public void setExpressionTypingServices(@NotNull ExpressionTypingServices expressionTypingServices) {
-        this.expressionTypingServices = expressionTypingServices;
-    }
-
-    @Inject
-    public void setBuiltIns(@NotNull KotlinBuiltIns builtIns) {
+    public ArgumentTypeResolver(
+            KotlinBuiltIns builtIns,
+            ExpressionTypingServices expressionTypingServices,
+            TypeResolver typeResolver
+    ) {
         this.builtIns = builtIns;
+        this.expressionTypingServices = expressionTypingServices;
+        this.typeResolver = typeResolver;
     }
 
     public static boolean isSubtypeOfForArgumentType(

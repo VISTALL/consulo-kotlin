@@ -18,6 +18,7 @@ package org.jetbrains.kotlin.types.expressions
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.container.get
 import org.jetbrains.kotlin.context.GlobalContext
 import org.jetbrains.kotlin.context.withModule
@@ -151,8 +152,9 @@ class LocalClassDescriptorHolder(
 class LocalLazyDeclarationResolver(
         globalContext: GlobalContext,
         trace: BindingTrace,
-        val localClassDescriptorManager: LocalClassDescriptorHolder
-) : LazyDeclarationResolver(globalContext, trace) {
+        val localClassDescriptorManager: LocalClassDescriptorHolder,
+        topLevelDescriptorProvider : TopLevelDescriptorProvider
+) : LazyDeclarationResolver(globalContext, trace, topLevelDescriptorProvider) {
 
     override fun getClassDescriptor(classOrObject: JetClassOrObject): ClassDescriptor {
         if (localClassDescriptorManager.isMyClass(classOrObject)) {

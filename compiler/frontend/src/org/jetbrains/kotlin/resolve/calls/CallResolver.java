@@ -78,50 +78,51 @@ public class CallResolver {
     private ArgumentTypeResolver argumentTypeResolver;
     private GenericCandidateResolver genericCandidateResolver;
     private CallCompleter callCompleter;
-    private TaskPrioritizer taskPrioritizer;
-    private AdditionalCheckerProvider additionalCheckerProvider;
+    private final TaskPrioritizer taskPrioritizer;
+    private final AdditionalCheckerProvider additionalCheckerProvider;
     
     private static final PerformanceCounter callResolvePerfCounter = PerformanceCounter.Companion.create("Call resolve", ExpressionTypingVisitorDispatcher.typeInfoPerfCounter);
     private static final PerformanceCounter candidatePerfCounter = PerformanceCounter.Companion.create("Call resolve candidate analysis", true);
 
+    public CallResolver(TaskPrioritizer taskPrioritizer, AdditionalCheckerProvider additionalCheckerProvider) {
+        this.taskPrioritizer = taskPrioritizer;
+        this.additionalCheckerProvider = additionalCheckerProvider;
+    }
+
+    // component dependency cycle
     @Inject
     public void setExpressionTypingServices(@NotNull ExpressionTypingServices expressionTypingServices) {
         this.expressionTypingServices = expressionTypingServices;
     }
 
+    // component dependency cycle
     @Inject
     public void setTypeResolver(@NotNull TypeResolver typeResolver) {
         this.typeResolver = typeResolver;
     }
 
+    // component dependency cycle
     @Inject
     public void setCandidateResolver(@NotNull CandidateResolver candidateResolver) {
         this.candidateResolver = candidateResolver;
     }
 
+    // component dependency cycle
     @Inject
     public void setArgumentTypeResolver(@NotNull ArgumentTypeResolver argumentTypeResolver) {
         this.argumentTypeResolver = argumentTypeResolver;
     }
 
+    // component dependency cycle
     @Inject
     public void setGenericCandidateResolver(GenericCandidateResolver genericCandidateResolver) {
         this.genericCandidateResolver = genericCandidateResolver;
     }
 
+    // component dependency cycle
     @Inject
     public void setCallCompleter(@NotNull CallCompleter callCompleter) {
         this.callCompleter = callCompleter;
-    }
-
-    @Inject
-    public void setTaskPrioritizer(@NotNull TaskPrioritizer taskPrioritizer) {
-        this.taskPrioritizer = taskPrioritizer;
-    }
-
-    @Inject
-    public void setAdditionalCheckerProvider(AdditionalCheckerProvider additionalCheckerProvider) {
-        this.additionalCheckerProvider = additionalCheckerProvider;
     }
 
     @NotNull

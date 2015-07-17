@@ -35,28 +35,22 @@ import org.jetbrains.kotlin.resolve.jvm.kotlinSignature.AlternativeMethodSignatu
 import org.jetbrains.kotlin.resolve.jvm.kotlinSignature.SignaturesPropagationData;
 import org.jetbrains.kotlin.types.JetType;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
 public class TraceBasedExternalSignatureResolver implements ExternalSignatureResolver {
-    private BindingTrace trace;
-    private ExternalAnnotationResolver externalAnnotationResolver;
-    private Project project;
+    private final BindingTrace trace;
+    private final ExternalAnnotationResolver externalAnnotationResolver;
+    private final Project project;
 
-    @Inject
-    public void setTrace(BindingTrace trace) {
-        this.trace = trace;
-    }
-
-    @Inject
-    public void setExternalAnnotationResolver(ExternalAnnotationResolver externalAnnotationResolver) {
+    public TraceBasedExternalSignatureResolver(
+            ExternalAnnotationResolver externalAnnotationResolver,
+            Project project,
+            BindingTrace trace
+    ) {
         this.externalAnnotationResolver = externalAnnotationResolver;
-    }
-
-    @Inject
-    public void setProject(Project project) {
         this.project = project;
+        this.trace = trace;
     }
 
     @Override

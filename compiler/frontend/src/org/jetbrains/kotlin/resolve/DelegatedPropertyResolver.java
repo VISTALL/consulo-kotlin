@@ -42,7 +42,6 @@ import org.jetbrains.kotlin.types.expressions.ExpressionTypingContext;
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingServices;
 import org.jetbrains.kotlin.util.slicedMap.WritableSlice;
 
-import javax.inject.Inject;
 import java.util.List;
 
 import static org.jetbrains.kotlin.diagnostics.Errors.*;
@@ -58,29 +57,21 @@ public class DelegatedPropertyResolver {
 
     public static final Name PROPERTY_DELEGATED_FUNCTION_NAME = Name.identifier("propertyDelegated");
 
-    private ExpressionTypingServices expressionTypingServices;
-    private CallResolver callResolver;
-    private KotlinBuiltIns builtIns;
-    private AdditionalCheckerProvider additionalCheckerProvider;
+    private final ExpressionTypingServices expressionTypingServices;
+    private final CallResolver callResolver;
+    private final KotlinBuiltIns builtIns;
+    private final AdditionalCheckerProvider additionalCheckerProvider;
 
-    @Inject
-    public void setExpressionTypingServices(@NotNull ExpressionTypingServices expressionTypingServices) {
-        this.expressionTypingServices = expressionTypingServices;
-    }
-
-    @Inject
-    public void setCallResolver(@NotNull CallResolver callResolver) {
-        this.callResolver = callResolver;
-    }
-
-    @Inject
-    public void setBuiltIns(@NotNull KotlinBuiltIns builtIns) {
-        this.builtIns = builtIns;
-    }
-
-    @Inject
-    public void setAdditionalCheckerProvider(AdditionalCheckerProvider additionalCheckerProvider) {
+    public DelegatedPropertyResolver(
+            AdditionalCheckerProvider additionalCheckerProvider,
+            KotlinBuiltIns builtIns,
+            CallResolver callResolver,
+            ExpressionTypingServices expressionTypingServices
+    ) {
         this.additionalCheckerProvider = additionalCheckerProvider;
+        this.builtIns = builtIns;
+        this.callResolver = callResolver;
+        this.expressionTypingServices = expressionTypingServices;
     }
 
     @Nullable
