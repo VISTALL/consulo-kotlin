@@ -1,0 +1,13 @@
+package
+
+internal fun f1(): (kotlin.String) -> kotlin.Int
+
+internal object O {
+    private constructor O()
+    public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+    internal final fun foo(/*0*/ s: kotlin.String): kotlin.Int
+    public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+    internal final fun notAllowed(): [ERROR : Error function type]
+    public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+    internal final fun kotlin.Int.bar(): kotlin.Unit
+}

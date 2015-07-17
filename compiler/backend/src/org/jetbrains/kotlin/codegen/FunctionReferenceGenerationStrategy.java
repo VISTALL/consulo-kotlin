@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.psi.Call;
 import org.jetbrains.kotlin.psi.JetCallExpression;
 import org.jetbrains.kotlin.psi.JetExpression;
 import org.jetbrains.kotlin.psi.ValueArgument;
+import org.jetbrains.kotlin.resolve.DescriptorUtils;
 import org.jetbrains.kotlin.resolve.calls.model.DelegatingResolvedCall;
 import org.jetbrains.kotlin.resolve.calls.model.ExpressionValueArgument;
 import org.jetbrains.kotlin.resolve.calls.model.ResolvedCall;
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.resolve.calls.util.CallMaker;
 import org.jetbrains.kotlin.resolve.jvm.jvmSignature.JvmMethodSignature;
 import org.jetbrains.kotlin.resolve.scopes.receivers.ExpressionReceiver;
 import org.jetbrains.kotlin.resolve.scopes.receivers.ReceiverValue;
+import org.jetbrains.kotlin.types.JetType;
 import org.jetbrains.org.objectweb.asm.Type;
 import org.jetbrains.org.objectweb.asm.commons.InstructionAdapter;
 
@@ -70,7 +72,7 @@ public class FunctionReferenceGenerationStrategy extends FunctionGenerationStrat
         JetCallExpression fakeExpression = constructFakeFunctionCall();
         final List<? extends ValueArgument> fakeArguments = fakeExpression.getValueArguments();
 
-        final ReceiverValue dispatchReceiver = computeAndSaveReceiver(signature, codegen, referencedFunction.getDispatchReceiverParameter());
+        final ReceiverValue dispatchReceiver = computeAndSaveReceiver(signature, codegen, dispatchReceiverParameter());
         final ReceiverValue extensionReceiver = computeAndSaveReceiver(signature, codegen, referencedFunction.getExtensionReceiverParameter());
         computeAndSaveArguments(fakeArguments, codegen);
 
@@ -134,7 +136,7 @@ public class FunctionReferenceGenerationStrategy extends FunctionGenerationStrat
     }
 
     private void computeAndSaveArguments(@NotNull List<? extends ValueArgument> fakeArguments, @NotNull ExpressionCodegen codegen) {
-        int receivers = (referencedFunction.getDispatchReceiverParameter() != null ? 1 : 0) +
+        int receivers = (dispatchReceiverParameter() != null ? 1 : 0) +
                         (referencedFunction.getExtensionReceiverParameter() != null ? 1 : 0);
 
         List<ValueParameterDescriptor> parameters = KotlinPackage.drop(callableDescriptor.getValueParameters(), receivers);
@@ -148,17 +150,35 @@ public class FunctionReferenceGenerationStrategy extends FunctionGenerationStrat
         }
     }
 
+    @Nullable
+    private ReceiverParameterDescriptor dispatchReceiverParameter() {
+        return DescriptorUtils.isObject(referencedFunction.getContainingDeclaration()) ? null :
+               referencedFunction.getDispatchReceiverParameter();
+    }
+
     @NotNull
     private ReceiverValue computeAndSaveReceiver(
             @NotNull JvmMethodSignature signature,
             @NotNull ExpressionCodegen codegen,
             @Nullable ReceiverParameterDescriptor receiver
     ) {
-        if (receiver == null) return NO_RECEIVER;
+        StackValue value;
+        JetType receiverType;
+        if (DescriptorUtils.isObject(referencedFunction.getContainingDeclaration())) {
+            ReceiverParameterDescriptor dispatchReceiver = referencedFunction.getDispatchReceiverParameter();
+            //noinspection ConstantConditions
+            receiverType = dispatchReceiver.getType();
+            value = StackValue.singleton((ClassDescriptor) referencedFunction.getContainingDeclaration(), codegen.typeMapper);
+        }
+        else if (receiver != null) {
+            receiverType = receiver.getType();
+            value = receiverParameterStackValue(signature);
+        }
+        else return NO_RECEIVER;
 
         JetExpression receiverExpression = JetPsiFactory(state.getProject()).createExpression("callableReferenceFakeReceiver");
-        codegen.tempVariables.put(receiverExpression, receiverParameterStackValue(signature));
-        return new ExpressionReceiver(receiverExpression, receiver.getType());
+        codegen.tempVariables.put(receiverExpression, value);
+        return new ExpressionReceiver(receiverExpression, receiverType);
     }
 
     @NotNull

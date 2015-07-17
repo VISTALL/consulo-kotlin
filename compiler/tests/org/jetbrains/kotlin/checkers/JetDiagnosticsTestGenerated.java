@@ -1586,6 +1586,12 @@ public class JetDiagnosticsTestGenerated extends AbstractJetDiagnosticsTest {
                     doTest(fileName);
                 }
 
+                @TestMetadata("objectMember.kt")
+                public void testObjectMember() throws Exception {
+                    String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/callableReference/function/objectMember.kt");
+                    doTest(fileName);
+                }
+
                 @TestMetadata("renameOnImport.kt")
                 public void testRenameOnImport() throws Exception {
                     String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/callableReference/function/renameOnImport.kt");

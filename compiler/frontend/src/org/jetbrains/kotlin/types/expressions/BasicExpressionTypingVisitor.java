@@ -695,7 +695,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor {
             return null;
         }
 
-        JetType receiverType = extensionReceiver != null ? extensionReceiver.getType() :
+        JetType receiverType = DescriptorUtils.isObject(descriptor.getContainingDeclaration()) ? null :
+                               extensionReceiver != null ? extensionReceiver.getType() :
                                dispatchReceiver != null ? dispatchReceiver.getType() :
                                null;
 

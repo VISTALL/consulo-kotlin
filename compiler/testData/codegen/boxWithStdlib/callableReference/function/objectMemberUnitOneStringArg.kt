@@ -8,6 +8,6 @@ object A {
 
 fun box(): String {
     val x = A::foo
-    x(A, "OK")
+    x("OK")
     return A.result
 }

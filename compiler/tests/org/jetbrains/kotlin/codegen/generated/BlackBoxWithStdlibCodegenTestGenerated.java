@@ -549,6 +549,12 @@ public class BlackBoxWithStdlibCodegenTestGenerated extends AbstractBlackBoxCode
                 doTestWithStdlib(fileName);
             }
 
+            @TestMetadata("objectMemberIntOneStringArg.kt")
+            public void testObjectMemberIntOneStringArg() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/codegen/boxWithStdlib/callableReference/function/objectMemberIntOneStringArg.kt");
+                doTestWithStdlib(fileName);
+            }
+
             @TestMetadata("objectMemberUnitNoArgs.kt")
             public void testObjectMemberUnitNoArgs() throws Exception {
                 String fileName = JetTestUtils.navigationMetadata("compiler/testData/codegen/boxWithStdlib/callableReference/function/objectMemberUnitNoArgs.kt");
