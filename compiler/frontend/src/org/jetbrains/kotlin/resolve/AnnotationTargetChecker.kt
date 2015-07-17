@@ -30,6 +30,9 @@ import org.jetbrains.kotlin.types.TypeUtils
 import java.lang.annotation.ElementType
 import java.util.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationTarget
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.FqNameUnsafe
+import java.lang.annotation.Target
 import kotlin.annotation
 
 public object AnnotationTargetChecker {
@@ -37,7 +40,7 @@ public object AnnotationTargetChecker {
     public fun check(annotated: JetAnnotated, trace: BindingTrace, descriptor: ClassDescriptor? = null) {
         if (annotated is JetTypeParameter) return // TODO: support type parameter annotations
         val actualTargets = getActualTargetList(annotated, descriptor)
-        for (entry in annotated.getAnnotationEntries()) {
+        for (entry in annotated.annotationEntries) {
             checkAnnotationEntry(entry, actualTargets, trace)
         }
         if (annotated is JetCallableDeclaration) {
@@ -48,7 +51,7 @@ public object AnnotationTargetChecker {
                 if (!parameter.hasValOrVar()) {
                     check(parameter, trace)
                     if (annotated is JetFunctionLiteral) {
-                        parameter.getTypeReference()?.let { check(it, trace) }
+                        parameter.typeReference?.let { check(it, trace) }
                     }
                 }
             }
@@ -66,26 +69,27 @@ public object AnnotationTargetChecker {
         }
         if (expression is JetFunctionLiteralExpression) {
             for (parameter in expression.getValueParameters()) {
-                parameter.getTypeReference()?.let { check(it, trace) }
+                parameter.typeReference?.let { check(it, trace) }
             }
         }
     }
 
     public fun possibleTargetSet(classDescriptor: ClassDescriptor): Set<AnnotationTarget>? {
-        val targetEntryDescriptor = classDescriptor.getAnnotations().findAnnotation(KotlinBuiltIns.FQ_NAMES.target)
-                                    ?: return null
-        val valueArguments = targetEntryDescriptor.getAllValueArguments()
+        val targetEntryDescriptor = classDescriptor.annotations.firstOrNull {
+            it.type.constructor.declarationDescriptor?.let { DescriptorUtils.getFqName(it) } == KotlinBuiltIns.FQ_NAMES.target.toUnsafe()
+        } ?: return null
+        val valueArguments = targetEntryDescriptor.allValueArguments
         val valueArgument = valueArguments.entrySet().firstOrNull()?.getValue() as? ArrayValue ?: return null
         return valueArgument.value.filterIsInstance<EnumValue>().map {
-            AnnotationTarget.valueOrNull(it.value.getName().asString())
+            AnnotationTarget.valueOrNull(it.value.name.asString())
         }.filterNotNull().toSet()
     }
 
     private fun possibleTargetSet(entry: JetAnnotationEntry, trace: BindingTrace): Set<AnnotationTarget> {
         val descriptor = trace.get(BindingContext.ANNOTATION, entry) ?: return AnnotationTarget.DEFAULT_TARGET_SET
         // For descriptor with error type, all targets are considered as possible
-        if (descriptor.getType().isError()) return AnnotationTarget.ALL_TARGET_SET
-        val classDescriptor = TypeUtils.getClassDescriptor(descriptor.getType()) ?: return AnnotationTarget.DEFAULT_TARGET_SET
+        if (descriptor.type.error) return AnnotationTarget.ALL_TARGET_SET
+        val classDescriptor = TypeUtils.getClassDescriptor(descriptor.type) ?: return AnnotationTarget.DEFAULT_TARGET_SET
         return possibleTargetSet(classDescriptor) ?: AnnotationTarget.DEFAULT_TARGET_SET
     }
 
@@ -98,7 +102,7 @@ public object AnnotationTargetChecker {
     private fun getActualTargetList(annotated: JetAnnotated, descriptor: ClassDescriptor?): List<AnnotationTarget> {
         if (annotated is JetClassOrObject) {
             if (annotated is JetEnumEntry) return listOf(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-            return if (descriptor?.getKind() == ClassKind.ANNOTATION_CLASS) {
+            return if (descriptor?.kind == ClassKind.ANNOTATION_CLASS) {
                 listOf(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASSIFIER)
             }
             else {
