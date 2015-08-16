@@ -17,10 +17,7 @@
 package org.jetbrains.kotlin.parsing;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.LanguageParserDefinitions;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiParser;
+import com.intellij.lang.*;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
@@ -60,12 +57,12 @@ public class JetParserDefinition implements ParserDefinition {
 
     @Override
     @NotNull
-    public Lexer createLexer(Project project) {
+    public Lexer createLexer(Project project, LanguageVersion languageVersion) {
         return new JetLexer();
     }
 
     @Override
-    public PsiParser createParser(Project project) {
+    public PsiParser createParser(Project project, LanguageVersion languageVersion) {
         return new JetParser(project);
     }
 
@@ -76,19 +73,19 @@ public class JetParserDefinition implements ParserDefinition {
 
     @Override
     @NotNull
-    public TokenSet getWhitespaceTokens() {
+    public TokenSet getWhitespaceTokens(LanguageVersion languageVersion) {
         return JetTokens.WHITESPACES;
     }
 
     @Override
     @NotNull
-    public TokenSet getCommentTokens() {
+    public TokenSet getCommentTokens(LanguageVersion languageVersion) {
         return JetTokens.COMMENTS;
     }
 
     @Override
     @NotNull
-    public TokenSet getStringLiteralElements() {
+    public TokenSet getStringLiteralElements(LanguageVersion languageVersion) {
         return JetTokens.STRINGS;
     }
 

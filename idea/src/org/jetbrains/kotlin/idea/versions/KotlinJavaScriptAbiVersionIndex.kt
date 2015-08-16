@@ -31,7 +31,7 @@ public object KotlinJavaScriptAbiVersionIndex : KotlinAbiVersionIndexBase<Kotlin
 
     override fun getIndexer() = INDEXER
 
-    override fun getInputFilter() = FileBasedIndex.InputFilter() { file -> JavaScript.EXTENSION == file.getExtension() }
+    override fun getInputFilter() = FileBasedIndex.InputFilter() { (project, file) -> JavaScript.EXTENSION == file.getExtension() }
 
     override fun getVersion() = VERSION
 

@@ -16,12 +16,12 @@
 
 package org.jetbrains.kotlin.idea.util.projectStructure
 
-import com.intellij.openapi.roots.libraries.Library
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.roots.OrderEnumerator
-import java.io.File
-import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.roots.OrderRootType
+import com.intellij.openapi.roots.libraries.Library
+import com.intellij.openapi.vfs.VfsUtil
+import java.io.File
 
 public fun Module.findLibrary(predicate: (Library) -> Boolean): Library? = OrderEnumerator.orderEntries(this).findLibrary(predicate)
 
@@ -40,7 +40,7 @@ public fun OrderEnumerator.findLibrary(predicate: (Library) -> Boolean): Library
     return lib
 }
 
-public fun Module.getModuleDir(): String = File(getModuleFilePath()).getParent()!!.replace(File.separatorChar, '/')
+public fun Module.getModuleDir(): String = getModuleDirPath()!!.replace(File.separatorChar, '/')
 
 public fun Library.ModifiableModel.replaceFileRoot(oldFile: File, newFile: File) {
     val oldRoot = VfsUtil.getUrlForLibraryRoot(oldFile)

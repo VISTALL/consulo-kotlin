@@ -177,7 +177,7 @@ object KeywordCompletion {
             val elementAt = file.findElementAt(prefixText.length())!!
 
             when {
-                !elementAt.getNode()!!.getElementType().matchesKeyword(keywordTokenType) -> false
+                !elementAt.getNode()!!.getElementType()!!.matchesKeyword(keywordTokenType) -> false
 
                 elementAt.getNonStrictParentOfType<PsiErrorElement>() != null -> false
 

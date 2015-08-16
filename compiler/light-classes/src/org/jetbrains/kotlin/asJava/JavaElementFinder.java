@@ -21,7 +21,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -36,7 +35,6 @@ import org.jetbrains.kotlin.name.FqName;
 import org.jetbrains.kotlin.name.NamePackage;
 import org.jetbrains.kotlin.psi.JetClassOrObject;
 import org.jetbrains.kotlin.psi.JetEnumEntry;
-import org.jetbrains.kotlin.psi.JetFile;
 import org.jetbrains.kotlin.resolve.jvm.KotlinFinderMarker;
 
 import java.util.Collection;
@@ -141,7 +139,7 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
 
     @NotNull
     @Override
-    public Set<String> getClassNames(@NotNull PsiPackage psiPackage, @NotNull GlobalSearchScope scope) {
+    public Set<String> getClassNames(@NotNull PsiJavaPackage psiPackage, @NotNull GlobalSearchScope scope) {
         FqName packageFQN = new FqName(psiPackage.getQualifiedName());
 
         Collection<JetClassOrObject> declarations = lightClassGenerationSupport.findClassOrObjectDeclarationsInPackage(packageFQN, scope);
@@ -160,7 +158,7 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
     }
 
     @Override
-    public PsiPackage findPackage(@NotNull String qualifiedNameString) {
+    public PsiJavaPackage findPackage(@NotNull String qualifiedNameString) {
         if (!NamePackage.isValidJavaFqName(qualifiedNameString)) {
             return null;
         }
@@ -178,24 +176,24 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
 
     @NotNull
     @Override
-    public PsiPackage[] getSubPackages(@NotNull PsiPackage psiPackage, @NotNull final GlobalSearchScope scope) {
+    public PsiJavaPackage[] getSubPackages(@NotNull PsiJavaPackage psiPackage, @NotNull final GlobalSearchScope scope) {
         FqName packageFQN = new FqName(psiPackage.getQualifiedName());
 
         Collection<FqName> subpackages = lightClassGenerationSupport.getSubPackages(packageFQN, scope);
 
-        Collection<PsiPackage> answer = Collections2.transform(subpackages, new Function<FqName, PsiPackage>() {
+        Collection<PsiJavaPackage> answer = Collections2.transform(subpackages, new Function<FqName, PsiJavaPackage>() {
             @Override
-            public PsiPackage apply(@Nullable FqName input) {
+            public PsiJavaPackage apply(@Nullable FqName input) {
                 return new JetLightPackage(psiManager, input, scope);
             }
         });
 
-        return answer.toArray(new PsiPackage[answer.size()]);
+        return answer.toArray(new PsiJavaPackage[answer.size()]);
     }
 
     @NotNull
     @Override
-    public PsiClass[] getClasses(@NotNull PsiPackage psiPackage, @NotNull GlobalSearchScope scope) {
+    public PsiClass[] getClasses(@NotNull PsiJavaPackage psiPackage, @NotNull GlobalSearchScope scope) {
         List<PsiClass> answer = new SmartList<PsiClass>();
         FqName packageFQN = new FqName(psiPackage.getQualifiedName());
 
@@ -212,9 +210,9 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
         return sortByClasspath(answer, scope).toArray(new PsiClass[answer.size()]);
     }
 
-    @Override
+    /*@Override
     @NotNull
-    public PsiFile[] getPackageFiles(@NotNull PsiPackage psiPackage, @NotNull GlobalSearchScope scope) {
+    public PsiFile[] getPackageFiles(@NotNull PsiJavaPackage psiPackage, @NotNull GlobalSearchScope scope) {
         FqName packageFQN = new FqName(psiPackage.getQualifiedName());
         Collection<JetFile> result = lightClassGenerationSupport.findFilesForPackage(packageFQN, scope);
         return result.toArray(new PsiFile[result.size()]);
@@ -222,7 +220,7 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
 
     @Override
     @Nullable
-    public Condition<PsiFile> getPackageFilesFilter(@NotNull final PsiPackage psiPackage, @NotNull GlobalSearchScope scope) {
+    public Condition<PsiFile> getPackageFilesFilter(@NotNull final PsiJavaPackage psiPackage, @NotNull GlobalSearchScope scope) {
         return new Condition<PsiFile>() {
             @Override
             public boolean value(PsiFile input) {
@@ -232,7 +230,7 @@ public class JavaElementFinder extends PsiElementFinder implements KotlinFinderM
                 return psiPackage.getQualifiedName().equals(((JetFile) input).getPackageFqName().asString());
             }
         };
-    }
+    }*/
 
     private static class FindClassesRequest {
         private final String fqName;

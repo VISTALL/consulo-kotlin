@@ -22,18 +22,24 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.JavaProjectRootsUtil;
+import com.intellij.openapi.roots.ContentFolder;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.EmptyRunnable;
 import com.intellij.openapi.util.Pass;
-import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.psi.*;
-import com.intellij.refactoring.*;
+import com.intellij.refactoring.JavaRefactoringSettings;
+import com.intellij.refactoring.MoveDestination;
+import com.intellij.refactoring.PackageWrapper;
+import com.intellij.refactoring.RefactoringBundle;
 import com.intellij.refactoring.classMembers.DependencyMemberInfoModel;
 import com.intellij.refactoring.classMembers.MemberInfoChange;
 import com.intellij.refactoring.classMembers.MemberInfoChangeListener;
@@ -62,14 +68,17 @@ import org.jetbrains.kotlin.idea.core.CorePackage;
 import org.jetbrains.kotlin.idea.core.refactoring.RefactoringPackage;
 import org.jetbrains.kotlin.idea.refactoring.JetRefactoringBundle;
 import org.jetbrains.kotlin.idea.refactoring.memberInfo.KotlinMemberInfo;
-import org.jetbrains.kotlin.idea.refactoring.move.MovePackage;
-import org.jetbrains.kotlin.idea.refactoring.move.moveTopLevelDeclarations.*;
 import org.jetbrains.kotlin.idea.refactoring.memberInfo.KotlinMemberSelectionPanel;
 import org.jetbrains.kotlin.idea.refactoring.memberInfo.KotlinMemberSelectionTable;
+import org.jetbrains.kotlin.idea.refactoring.move.MovePackage;
+import org.jetbrains.kotlin.idea.refactoring.move.moveTopLevelDeclarations.*;
 import org.jetbrains.kotlin.idea.util.application.ApplicationPackage;
 import org.jetbrains.kotlin.name.FqName;
 import org.jetbrains.kotlin.psi.JetFile;
 import org.jetbrains.kotlin.psi.JetNamedDeclaration;
+import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
+import org.mustbe.consulo.roots.ContentFolderScopes;
+import org.mustbe.consulo.roots.impl.property.GeneratedContentFolderPropertyProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -336,7 +345,23 @@ public class MoveKotlinTopLevelDeclarationsDialog extends RefactoringDialog {
     }
 
     private boolean hasAnySourceRoots() {
-        return !JavaProjectRootsUtil.getSuitableDestinationSourceRoots(myProject).isEmpty();
+        ModuleManager moduleManager = ModuleManager.getInstance(myProject);
+        for (Module module : moduleManager.getModules()) {
+            // FIXME [VISTALL] js impl ?
+            JavaModuleExtension extension = ModuleUtilCore.getExtension(module, JavaModuleExtension.class);
+            if(extension == null) {
+                continue;
+            }
+            ContentFolder[] folders = ModuleRootManager.getInstance(module).getContentFolders(ContentFolderScopes.onlyProduction());
+            for (ContentFolder folder : folders) {
+                // we dont allow generated
+                Boolean value = folder.getPropertyValue(GeneratedContentFolderPropertyProvider.IS_GENERATED);
+                if(value != Boolean.FALSE) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void saveRefactoringSettings() {
@@ -439,7 +464,7 @@ public class MoveKotlinTopLevelDeclarationsDialog extends RefactoringDialog {
         final PsiDirectory psiDirectory = RefactoringPackage.toPsiDirectory(targetDir, myProject);
         assert psiDirectory != null : "No directory found: " + targetDir.getPath();
 
-        PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(psiDirectory);
+        PsiJavaPackage psiPackage = JavaDirectoryService.getInstance().getPackage(psiDirectory);
         if (psiPackage == null) {
             setErrorText("Could not find package corresponding to " + targetDir.getPath());
             return null;

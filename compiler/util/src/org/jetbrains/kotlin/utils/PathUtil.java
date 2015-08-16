@@ -18,11 +18,11 @@ package org.jetbrains.kotlin.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.projectRoots.ex.JavaSdkUtil;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.model.java.impl.JavaSdkUtil;
 
 import java.io.File;
 import java.util.List;

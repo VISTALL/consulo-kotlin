@@ -19,11 +19,11 @@ package org.jetbrains.kotlin.idea.versions
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ApplicationComponent
-import com.intellij.openapi.vfs.JarFileSystem
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFileVisitor
 import com.intellij.openapi.vfs.newvfs.NewVirtualFile
+import com.intellij.openapi.vfs.util.ArchiveVfsUtil
 import com.intellij.util.indexing.FileBasedIndex
 import org.jetbrains.kotlin.idea.JetPluginUtil
 import org.jetbrains.kotlin.idea.vfilefinder.KotlinClassFileIndex
@@ -81,7 +81,7 @@ class KotlinUpdatePluginComponent : ApplicationComponent {
         val localVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(jarFilePath)
 
         // Build and update JarHandler
-        val jarFile = JarFileSystem.getInstance()!!.getJarRootForLocalFile(localVirtualFile!!)
+        val jarFile = ArchiveVfsUtil.getArchiveRootForLocalFile(localVirtualFile!!)
         VfsUtilCore.visitChildrenRecursively(jarFile!!, object : VirtualFileVisitor<Any?>() {})
         ((jarFile as NewVirtualFile)).markDirtyRecursively()
 

@@ -23,7 +23,7 @@ import com.intellij.debugger.engine.LambdaMethodFilter
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElementFactory
 import com.intellij.util.Range
-import com.sun.jdi.Location
+import consulo.internal.com.sun.jdi.Location
 import org.jetbrains.kotlin.idea.util.application.runReadAction
 import org.jetbrains.kotlin.psi.JetBlockExpression
 import org.jetbrains.kotlin.psi.JetFunctionLiteralExpression

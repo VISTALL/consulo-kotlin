@@ -38,7 +38,7 @@ public class DeprecatedTraitSyntaxFix(element: PsiElement): JetIntentionAction<P
     companion object : JetSingleIntentionActionFactory() {
         fun replaceWithInterfaceKeyword(element: PsiElement) {
             val cls = JetPsiFactory(element.getProject()).createClass("interface A {}")
-            element.replace(cls.getNode().findChildByType(JetTokens.INTERFACE_KEYWORD)!!.getPsi())
+            element.replace(cls.getNode().findChildByType(JetTokens.INTERFACE_KEYWORD)!!.getPsi()!!)
         }
 
         override fun createAction(diagnostic: Diagnostic): IntentionAction =
@@ -47,7 +47,7 @@ public class DeprecatedTraitSyntaxFix(element: PsiElement): JetIntentionAction<P
         public fun createWholeProjectFixFactory(): JetSingleIntentionActionFactory = createIntentionFactory {
             JetWholeProjectForEachElementOfTypeFix.createByPredicate<JetClass>(
                     predicate = { it.getNode().findChildByType(JetTokens.TRAIT_KEYWORD) != null },
-                    taskProcessor = { replaceWithInterfaceKeyword(it.getNode().findChildByType(JetTokens.TRAIT_KEYWORD)!!.getPsi())},
+                    taskProcessor = { replaceWithInterfaceKeyword(it.getNode().findChildByType(JetTokens.TRAIT_KEYWORD)!!.getPsi()!!)},
                     name = "Replace 'trait' with 'interface' in whole project"
             )
         }

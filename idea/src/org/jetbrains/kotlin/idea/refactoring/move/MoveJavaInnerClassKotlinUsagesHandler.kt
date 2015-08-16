@@ -16,21 +16,21 @@
 
 package org.jetbrains.kotlin.idea.refactoring.move
 
-import com.intellij.refactoring.move.moveInner.MoveInnerClassUsagesHandler
-import com.intellij.usageView.UsageInfo
 import com.intellij.psi.PsiClass
-import org.jetbrains.kotlin.psi.JetQualifiedExpression
-import org.jetbrains.kotlin.psi.psiUtil.getQualifiedElementSelector
+import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.usageView.UsageInfo
+import org.jetbrains.kotlin.idea.references.mainReference
 import org.jetbrains.kotlin.psi.JetCallExpression
 import org.jetbrains.kotlin.psi.JetPsiFactory
-import java.util.ArrayList
+import org.jetbrains.kotlin.psi.JetQualifiedExpression
 import org.jetbrains.kotlin.psi.JetSimpleNameExpression
-import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.psi.PsiWhiteSpace
-import org.jetbrains.kotlin.idea.references.mainReference
+import org.jetbrains.kotlin.psi.psiUtil.getQualifiedElementSelector
+import java.util.ArrayList
 
-public class MoveJavaInnerClassKotlinUsagesHandler: MoveInnerClassUsagesHandler {
-    override fun correctInnerClassUsage(usage: UsageInfo, outerClass: PsiClass) {
+public class MoveJavaInnerClassKotlinUsagesHandler/*: MoveInnerClassUsagesHandler*/ {
+    //TODO [VISTALL] MoveInnerClassUsagesHandler
+   /* override*/ fun correctInnerClassUsage(usage: UsageInfo, outerClass: PsiClass) {
         val innerCall = usage.getElement()?.getParent() as? JetCallExpression ?: return
 
         val receiver = (innerCall.getParent() as? JetQualifiedExpression)?.getReceiverExpression()

@@ -16,14 +16,12 @@
 
 package org.jetbrains.kotlin.kdoc.lexer;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderFactory;
-import com.intellij.lang.PsiParser;
+import com.intellij.lang.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.LanguageVersionUtil;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.idea.JetLanguage;
 import org.jetbrains.kotlin.kdoc.parser.KDocLinkParser;
@@ -36,11 +34,12 @@ public interface KDocTokens {
         public ASTNode parseContents(ASTNode chameleon) {
             PsiElement parentElement = chameleon.getTreeParent().getPsi();
             Project project = parentElement.getProject();
-            PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, new KDocLexer(), getLanguage(),
+            LanguageVersion languageVersion = LanguageVersionUtil.findDefaultVersion(getLanguage());
+            PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, new KDocLexer(), getLanguage(), languageVersion,
                                                                                chameleon.getText());
             PsiParser parser = new KDocParser();
 
-            return parser.parse(this, builder).getFirstChildNode();
+            return parser.parse(this, builder, languageVersion).getFirstChildNode();
         }
 
         @Nullable

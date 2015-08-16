@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.idea.completion
 import com.intellij.codeInsight.completion.InsertHandler
 import com.intellij.codeInsight.lookup.*
 import com.intellij.codeInsight.lookup.impl.LookupCellRenderer
+import com.intellij.ide.IconDescriptorUpdaters
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.util.PlatformIcons
@@ -121,7 +122,7 @@ public class LookupElementFactory(
 
     public fun createLookupElementForJavaClass(psiClass: PsiClass, qualifyNestedClasses: Boolean = false, includeClassTypeArguments: Boolean = true): LookupElement {
         val lookupObject = object : DeclarationLookupObjectImpl(null, psiClass, resolutionFacade) {
-            override fun getIcon(flags: Int) = psiClass.getIcon(flags)
+            override fun getIcon(flags: Int) = IconDescriptorUpdaters.getIcon(psiClass, flags)
         }
         var element = LookupElementBuilder.create(lookupObject, psiClass.getName()!!)
                 .withInsertHandler(KotlinClassInsertHandler)

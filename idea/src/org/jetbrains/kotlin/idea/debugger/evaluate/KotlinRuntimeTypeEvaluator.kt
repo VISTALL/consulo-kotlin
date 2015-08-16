@@ -30,13 +30,13 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.project.Project
-import com.intellij.psi.CommonClassNames
-import com.sun.jdi.ClassType
-import com.sun.jdi.Value
+import consulo.internal.com.sun.jdi.ClassType
+import consulo.internal.com.sun.jdi.Value
 import org.jetbrains.eval4j.jdi.asValue
 import org.jetbrains.kotlin.psi.JetExpression
 import org.jetbrains.kotlin.psi.JetPsiFactory
 import org.jetbrains.kotlin.types.JetType
+import org.mustbe.consulo.java.util.JavaClassNames
 import org.jetbrains.org.objectweb.asm.Type as AsmType
 
 public abstract class KotlinRuntimeTypeEvaluator(
@@ -90,7 +90,7 @@ public abstract class KotlinRuntimeTypeEvaluator(
             val type = value.type()
             if (type is ClassType) {
                 val superclass = type.superclass()
-                if (superclass != null && CommonClassNames.JAVA_LANG_OBJECT != superclass.name()) {
+                if (superclass != null && JavaClassNames.JAVA_LANG_OBJECT != superclass.name()) {
                     psiClass = AsmType.getType(superclass.signature()).getClassDescriptor(project)
                     if (psiClass != null) {
                         return psiClass.getDefaultType()

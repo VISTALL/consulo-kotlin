@@ -18,9 +18,9 @@ package org.jetbrains.kotlin.idea.debugger.evaluate
 
 import com.intellij.debugger.engine.evaluation.EvaluateExceptionUtil
 import com.intellij.debugger.engine.evaluation.EvaluationContextImpl
-import com.sun.jdi.ClassType
-import com.sun.jdi.InvalidStackFrameException
-import com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi.ClassType
+import consulo.internal.com.sun.jdi.InvalidStackFrameException
+import consulo.internal.com.sun.jdi.ObjectReference
 import org.jetbrains.eval4j.Value
 import org.jetbrains.eval4j.jdi.asJdiValue
 import org.jetbrains.eval4j.jdi.asValue
@@ -148,7 +148,7 @@ class FrameVisitor(context: EvaluationContextImpl) {
         if (!shouldCheckType || asmType == null || value.asmType == asmType) return true
         if (project == null) return false
 
-        if ((value.obj() as? com.sun.jdi.ObjectReference)?.referenceType().isSubclass(asmType.getClassName())) {
+        if ((value.obj() as? consulo.internal.com.sun.jdi.ObjectReference)?.referenceType().isSubclass(asmType.getClassName())) {
             return true
         }
 
@@ -197,7 +197,7 @@ class FrameVisitor(context: EvaluationContextImpl) {
         else -> "$$name"
     }
 
-    private fun com.sun.jdi.Type?.isSubclass(superClassName: String): Boolean {
+    private fun consulo.internal.com.sun.jdi.Type?.isSubclass(superClassName: String): Boolean {
         if (this !is ClassType) return false
         if (allInterfaces().any { it.name() == superClassName }) {
             return true

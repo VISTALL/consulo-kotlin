@@ -18,13 +18,14 @@ package org.jetbrains.kotlin.j2k
 
 import com.intellij.codeInsight.NullableNotNullManager
 import com.intellij.psi.*
-import com.intellij.psi.CommonClassNames.JAVA_LANG_OBJECT
+import org.mustbe.consulo.java.util.JavaClassNames.JAVA_LANG_OBJECT
 import org.jetbrains.kotlin.asJava.KotlinLightElement
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.j2k.ast.*
 import org.jetbrains.kotlin.psi.JetCallableDeclaration
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 import org.jetbrains.kotlin.types.TypeUtils
+import org.mustbe.consulo.java.util.JavaClassNames
 import java.util.HashMap
 import java.util.HashSet
 
@@ -417,14 +418,14 @@ class TypeConverter(val converter: Converter) {
 
     companion object {
         private val boxingTypes: Set<String> = setOf(
-                CommonClassNames.JAVA_LANG_BYTE,
-                CommonClassNames.JAVA_LANG_CHARACTER,
-                CommonClassNames.JAVA_LANG_DOUBLE,
-                CommonClassNames.JAVA_LANG_FLOAT,
-                CommonClassNames.JAVA_LANG_INTEGER,
-                CommonClassNames.JAVA_LANG_LONG,
-                CommonClassNames.JAVA_LANG_SHORT,
-                CommonClassNames.JAVA_LANG_BOOLEAN
+                JavaClassNames.JAVA_LANG_BYTE,
+                JavaClassNames.JAVA_LANG_CHARACTER,
+                JavaClassNames.JAVA_LANG_DOUBLE,
+                JavaClassNames.JAVA_LANG_FLOAT,
+                JavaClassNames.JAVA_LANG_INTEGER,
+                JavaClassNames.JAVA_LANG_LONG,
+                JavaClassNames.JAVA_LANG_SHORT,
+                JavaClassNames.JAVA_LANG_BOOLEAN
         )
 
         private val modificationMethodNames = setOf(

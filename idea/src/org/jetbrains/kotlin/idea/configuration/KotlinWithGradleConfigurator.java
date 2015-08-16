@@ -170,7 +170,7 @@ public abstract class KotlinWithGradleConfigurator implements KotlinProjectConfi
 
     @NotNull
     protected static String getDefaultPathToBuildGradleFile(@NotNull Module module) {
-        return new File(module.getModuleFilePath()).getParent() + "/" + GradleConstants.DEFAULT_SCRIPT_NAME;
+        return module.getModuleDir() + "/" + GradleConstants.DEFAULT_SCRIPT_NAME;
     }
 
     protected static boolean isSnapshot(@NotNull String version) {

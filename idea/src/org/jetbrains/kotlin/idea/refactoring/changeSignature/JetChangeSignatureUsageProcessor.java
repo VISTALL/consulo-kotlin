@@ -82,7 +82,7 @@ import org.jetbrains.kotlin.types.TypeUtils;
 
 import java.util.*;
 
-public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsageProcessor {
+public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsageProcessorEx {
     // This is special 'PsiElement' whose purpose is to wrap JetMethodDescriptor so that it can be kept in the usage list
     private static class OriginalJavaMethodDescriptorWrapper extends UsageInfo {
         JetMethodDescriptor originalJavaMethodDescriptor;
@@ -1080,7 +1080,7 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
 
     @Override
     public boolean setupDefaultValues(ChangeInfo changeInfo, Ref<UsageInfo[]> refUsages, Project project) {
-        return true;
+        return false;
     }
 
     @Override

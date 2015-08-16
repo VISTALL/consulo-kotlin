@@ -23,10 +23,10 @@ import com.intellij.debugger.settings.NodeRendererSettings
 import com.intellij.debugger.ui.impl.watch.FieldDescriptorImpl
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiExpression
-import com.sun.jdi.Field
-import com.sun.jdi.Method
-import com.sun.jdi.ObjectReference
-import com.sun.jdi.Value
+import consulo.internal.com.sun.jdi.Field
+import consulo.internal.com.sun.jdi.Method
+import consulo.internal.com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi.Value
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.Name
 

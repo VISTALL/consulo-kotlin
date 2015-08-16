@@ -19,11 +19,8 @@ package org.jetbrains.kotlin.psi
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
-import com.intellij.psi.tree.TokenSet
-import org.jetbrains.kotlin.lexer.JetTokens
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
-import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.psi.stubs.KotlinEnumEntrySuperclassReferenceExpressionStub
 import org.jetbrains.kotlin.psi.stubs.elements.JetStubElementTypes
@@ -69,7 +66,7 @@ public class JetEnumEntrySuperclassReferenceExpression:
     }
 
     override fun getReferencedNameElementType(): IElementType {
-        return getReferencedNameElement().getNode()!!.getElementType()
+        return getReferencedNameElement().getNode()!!.getElementType()!!
     }
 
     override fun <R, D> accept(visitor: JetVisitor<R, D>, data: D): R {

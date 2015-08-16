@@ -30,7 +30,6 @@ import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.JavaProjectRootsUtil
 import com.intellij.openapi.ui.popup.JBPopup
 import com.intellij.openapi.ui.popup.JBPopupAdapter
 import com.intellij.openapi.ui.popup.LightweightWindowEvent
@@ -44,8 +43,6 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.BaseRefactoringProcessor.ConflictsInTestsException
 import com.intellij.refactoring.changeSignature.ChangeSignatureUtil
-import com.intellij.refactoring.listeners.RefactoringEventData
-import com.intellij.refactoring.listeners.RefactoringEventListener
 import com.intellij.refactoring.ui.ConflictsDialog
 import com.intellij.refactoring.util.ConflictsUtil
 import com.intellij.refactoring.util.RefactoringUIUtil
@@ -74,6 +71,7 @@ import org.jetbrains.kotlin.psi.psiUtil.*
 import org.jetbrains.kotlin.renderer.DescriptorRenderer
 import org.jetbrains.kotlin.resolve.AnalyzingUtils
 import org.jetbrains.kotlin.resolve.BindingContext
+import org.mustbe.consulo.java.util.JavaProjectRootsUtil
 import java.io.File
 import java.lang.annotation.Retention
 import java.util.ArrayList
@@ -118,7 +116,7 @@ public fun PsiElement.getUsageContext(): PsiElement {
 }
 
 public fun PsiElement.isInJavaSourceRoot(): Boolean =
-        !JavaProjectRootsUtil.isOutsideJavaSourceRoot(getContainingFile())
+        !JavaProjectRootsUtil.isOutsideSourceRoot(getContainingFile())
 
 public inline fun JetFile.createTempCopy(textTransform: (String) -> String): JetFile {
     val tmpFile = JetPsiFactory(this).createAnalyzableFile(getName(), textTransform(getText() ?: ""), this)
@@ -395,7 +393,7 @@ public fun PsiElement.isTrueJavaMethod(): Boolean = this is PsiMethod && this !i
 
 public fun PsiElement.canRefactor(): Boolean {
     return when {
-        this is PsiPackage ->
+        this is PsiJavaPackage ->
             getDirectories().any { it.canRefactor() }
         this is JetElement,
         this is PsiMember && getLanguage() == JavaLanguage.INSTANCE,
@@ -581,7 +579,8 @@ public fun (() -> Any).runRefactoringWithPostprocessing(
         finishAction: () -> Unit
 ) {
     val connection = project.getMessageBus().connect()
-    connection.subscribe(RefactoringEventListener.REFACTORING_EVENT_TOPIC,
+    //TODO [VISTALL]
+    /*connection.subscribe(RefactoringEventListener.REFACTORING_EVENT_TOPIC,
                          object: RefactoringEventListener {
                              override fun undoRefactoring(refactoringId: String) {
 
@@ -605,7 +604,7 @@ public fun (() -> Any).runRefactoringWithPostprocessing(
                                      }
                                  }
                              }
-                         })
+                         })*/
     this()
 }
 

@@ -19,17 +19,20 @@ package org.jetbrains.kotlin.idea.quickfix
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.*
+import com.intellij.psi.PsiComment
+import com.intellij.psi.PsiErrorElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.diagnostics.Diagnostic
 import org.jetbrains.kotlin.idea.quickfix.quickfixUtil.createIntentionFactory
 import org.jetbrains.kotlin.idea.quickfix.quickfixUtil.createIntentionForFirstParentOfType
 import org.jetbrains.kotlin.lexer.JetTokens
-import org.jetbrains.kotlin.psi
-import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
+import org.jetbrains.kotlin.psi.JetClassBody
+import org.jetbrains.kotlin.psi.JetEnumEntry
+import org.jetbrains.kotlin.psi.JetFile
+import org.jetbrains.kotlin.psi.JetPsiFactory
 import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNextSiblingIgnoringWhitespaceAndComments
-import org.jetbrains.kotlin.psi.stubs.elements.JetStubElementTypes
 import org.jetbrains.kotlin.resolve.DeclarationsChecker
 
 class DeprecatedEnumEntryDelimiterSyntaxFix(element: JetEnumEntry): JetIntentionAction<JetEnumEntry>(element), CleanupFix {
@@ -96,7 +99,7 @@ class DeprecatedEnumEntryDelimiterSyntaxFix(element: JetEnumEntry): JetIntention
                         curr = prev
                     }
                     if (curr !== last) {
-                        entry.deleteChildRange(curr.getNextSibling()!!, last)
+                        entry.deleteChildRange(curr!!.getNextSibling()!!, last)
                     }
                 }
             }

@@ -44,7 +44,7 @@ fun markElement(element: PsiElement): List<TextRange> {
 }
 
 fun markNode(node: ASTNode): List<TextRange> {
-    return markElement(node.getPsi())
+    return markElement(node.getPsi()!!)
 }
 
 fun markRange(range: TextRange): List<TextRange> {

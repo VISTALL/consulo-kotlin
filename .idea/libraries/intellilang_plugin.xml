@@ -1,11 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component name="libraryTable">
   <library name="intellilang-plugin">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/ideaSDK/plugins/IntelliLang/lib/IntelliLang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../consulo/consulo-java/out/artifacts/plugin/intelliLang/lib/intelliLang.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$PROJECT_DIR$/ideaSDK/sources/sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

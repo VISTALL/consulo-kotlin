@@ -18,7 +18,7 @@ package org.jetbrains.kotlin.j2k
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
-import com.intellij.psi.CommonClassNames.*
+import org.mustbe.consulo.java.util.JavaClassNames.*
 import com.intellij.psi.util.PsiMethodUtil
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.j2k.ast.*

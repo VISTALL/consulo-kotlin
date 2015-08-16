@@ -16,10 +16,10 @@
 
 package org.jetbrains.eval4j.jdi
 
-import com.sun.jdi
-import com.sun.jdi.ClassNotLoadedException
-import com.sun.jdi.Method
-import com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi
+import consulo.internal.com.sun.jdi.ClassNotLoadedException
+import consulo.internal.com.sun.jdi.Method
+import consulo.internal.com.sun.jdi.ObjectReference
 import org.jetbrains.eval4j.*
 import org.jetbrains.org.objectweb.asm.Type
 

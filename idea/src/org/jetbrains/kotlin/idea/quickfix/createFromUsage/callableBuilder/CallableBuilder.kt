@@ -685,7 +685,7 @@ class CallableBuilder(val config: CallableBuilderConfiguration) {
                 is JetNamedFunction -> TEMPLATE_FROM_USAGE_FUNCTION_BODY
                 else -> throw AssertionError("Unexpected declaration: " + func.getElementTextWithContext())
             }
-            val fileTemplate = FileTemplateManager.getInstance(func.getProject())!!.getCodeTemplate(templateName)
+            val fileTemplate = FileTemplateManager.getInstance().getCodeTemplate(templateName)
             val properties = Properties()
             properties.setProperty(FileTemplate.ATTRIBUTE_RETURN_TYPE, if (skipReturnType) "Unit" else func.getTypeReference()!!.getText())
             receiverClassDescriptor?.let {
@@ -892,7 +892,7 @@ class CallableBuilder(val config: CallableBuilderConfiguration) {
 
             JavaCodeStyleManager.getInstance(project).shortenClassReferences(newJavaMember);
 
-            val descriptor = OpenFileDescriptor(project, targetClass.getContainingFile().getVirtualFile())
+            val descriptor = OpenFileDescriptor(project, targetClass.getContainingFile().getVirtualFile()!!)
             val targetEditor = FileEditorManager.getInstance(project).openTextEditor(descriptor, true)!!
 
             when (newJavaMember) {
@@ -904,7 +904,7 @@ class CallableBuilder(val config: CallableBuilderConfiguration) {
                     val superCall = superStatement?.getExpression() as? PsiMethodCallExpression
                     if (superCall != null) {
                         val lParen = superCall.getArgumentList().getFirstChild()
-                        targetEditor.getCaretModel().moveToOffset(lParen.endOffset)
+                        targetEditor.getCaretModel().moveToOffset(lParen!!.endOffset)
                     }
                     else {
                         targetEditor.getCaretModel().moveToOffset(newJavaMember.startOffset)

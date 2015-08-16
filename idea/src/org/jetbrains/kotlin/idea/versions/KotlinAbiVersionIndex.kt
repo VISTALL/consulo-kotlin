@@ -16,7 +16,7 @@
 
 package org.jetbrains.kotlin.idea.versions
 
-import com.intellij.openapi.fileTypes.StdFileTypes
+import com.intellij.ide.highlighter.JavaClassFileType
 import com.intellij.util.indexing.DataIndexer
 import com.intellij.util.indexing.FileBasedIndex
 import com.intellij.util.indexing.FileContent
@@ -32,7 +32,7 @@ public object KotlinAbiVersionIndex : KotlinAbiVersionIndexBase<KotlinAbiVersion
 
     override fun getIndexer() = INDEXER
 
-    override fun getInputFilter() = FileBasedIndex.InputFilter() { file -> file.getFileType() == StdFileTypes.CLASS }
+    override fun getInputFilter() = FileBasedIndex.InputFilter() { (project, file) -> file.getFileType() == JavaClassFileType.INSTANCE }
 
     override fun getVersion() = VERSION
 

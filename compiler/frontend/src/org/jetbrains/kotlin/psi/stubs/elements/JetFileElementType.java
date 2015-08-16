@@ -25,6 +25,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.psi.tree.IStubFileElementType;
+import com.intellij.util.LanguageVersionUtil;
 import com.intellij.util.io.StringRef;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -83,8 +84,10 @@ public class JetFileElementType extends IStubFileElementType<KotlinFileStub> {
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
         Language languageForParser = getLanguageForParser(psi);
-        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser, chameleon.getChars());
-        JetParser parser = (JetParser) LanguageParserDefinitions.INSTANCE.forLanguage(languageForParser).createParser(project);
+        LanguageVersion<Language> version = LanguageVersionUtil.findDefaultVersion(languageForParser);
+        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser,
+                                                                           version, chameleon.getChars());
+        JetParser parser = (JetParser) LanguageParserDefinitions.INSTANCE.forLanguage(languageForParser).createParser(project, version);
         return parser.parse(this, builder, psi.getContainingFile()).getFirstChildNode();
     }
 

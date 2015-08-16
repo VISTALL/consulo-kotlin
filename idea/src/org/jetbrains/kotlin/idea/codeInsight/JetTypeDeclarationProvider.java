@@ -17,7 +17,10 @@
 package org.jetbrains.kotlin.idea.codeInsight;
 
 import com.intellij.codeInsight.navigation.actions.TypeDeclarationProvider;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.descriptors.CallableDescriptor;
 import org.jetbrains.kotlin.descriptors.ClassifierDescriptor;
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor;
@@ -28,9 +31,11 @@ import org.jetbrains.kotlin.resolve.BindingContext;
 import org.jetbrains.kotlin.resolve.DescriptorToSourceUtils;
 import org.jetbrains.kotlin.types.JetType;
 
-public class JetTypeDeclarationProvider implements TypeDeclarationProvider {
+public class JetTypeDeclarationProvider extends TypeDeclarationProvider {
     @Override
-    public PsiElement[] getSymbolTypeDeclarations(PsiElement symbol) {
+    public PsiElement[] getSymbolTypeDeclarations(
+            @NotNull PsiElement symbol, @Nullable Editor editor, int offset
+    ) {
         if (symbol instanceof JetElement && symbol.getContainingFile() instanceof JetFile) {
             BindingContext bindingContext = ResolvePackage.analyze((JetElement)symbol);
             DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, symbol);

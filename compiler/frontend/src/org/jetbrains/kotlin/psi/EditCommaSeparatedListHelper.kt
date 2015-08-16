@@ -29,7 +29,7 @@ private object EditCommaSeparatedListHelper {
     public fun <TItem: JetElement> addItemAfter(list: JetElement, allItems: List<TItem>, item: TItem, anchor: TItem?): TItem {
         assert(anchor == null || anchor.getParent() == list)
         if (allItems.isEmpty()) {
-            if (list.getFirstChild().getNode().getElementType() == JetTokens.LPAR) {
+            if (list.getFirstChild()!!.getNode().getElementType() == JetTokens.LPAR) {
                 return list.addAfter(item, list.getFirstChild()) as TItem
             }
             else {

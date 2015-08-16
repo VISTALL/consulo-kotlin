@@ -428,7 +428,7 @@ public object PositioningStrategies {
                     if (element.isImplicit()) {
                         val constructor = element.getStrictParentOfType<JetSecondaryConstructor>()!!
                         val valueParameterList = constructor.getValueParameterList() ?: return markElement(constructor)
-                        return markRange(constructor.getConstructorKeyword(), valueParameterList.getLastChild())
+                        return markRange(constructor.getConstructorKeyword(), valueParameterList.getLastChild()!!)
                     }
                     return markElement(element.getCalleeExpression() ?: element)
                 }

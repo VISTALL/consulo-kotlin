@@ -127,7 +127,7 @@ public class JetChangeSignature(project: Project,
                 object: JavaChangeSignatureDialog(project, JavaMethodDescriptor(preview), false, null) {
                     override fun createRefactoringProcessor(): BaseRefactoringProcessor? {
                         val processor = super.createRefactoringProcessor()
-                        (processor as? ChangeSignatureProcessor)?.getChangeInfo()?.updateMethod(javaChangeInfo.getMethod())
+                        (processor as? ChangeSignatureProcessor)?.getChangeInfo()?.updateMethod(javaChangeInfo.getMethod()!!)
                         return processor
                     }
                 }

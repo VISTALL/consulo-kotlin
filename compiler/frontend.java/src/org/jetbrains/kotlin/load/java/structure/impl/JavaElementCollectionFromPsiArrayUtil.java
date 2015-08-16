@@ -157,11 +157,11 @@ public class JavaElementCollectionFromPsiArrayUtil {
     }
 
     @NotNull
-    public static Collection<JavaPackage> packages(@NotNull PsiPackage[] packages, @NotNull final GlobalSearchScope scope) {
-        return convert(packages, new Factory<PsiPackage, JavaPackage>() {
+    public static Collection<JavaPackage> packages(@NotNull PsiJavaPackage[] packages, @NotNull final GlobalSearchScope scope) {
+        return convert(packages, new Factory<PsiJavaPackage, JavaPackage>() {
             @NotNull
             @Override
-            public JavaPackage create(@NotNull PsiPackage aPackage) {
+            public JavaPackage create(@NotNull PsiJavaPackage aPackage) {
                 return new JavaPackageImpl(aPackage, scope);
             }
         });

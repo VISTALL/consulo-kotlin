@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="IDE" pattern="file[idea]:*/||file[idea-analysis]:*/||file[ide-lazy-resolve]:*/" />
-</component>

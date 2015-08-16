@@ -16,19 +16,14 @@
 
 package org.jetbrains.kotlin.idea.configuration
 
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.util.SimpleModificationTracker
+import com.intellij.openapi.vfs.*
+import com.intellij.openapi.vfs.impl.BulkVirtualFileListenerAdapter
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
-import com.intellij.openapi.vfs.impl.BulkVirtualFileListenerAdapter
-import com.intellij.openapi.vfs.VirtualFileAdapter
-import com.intellij.openapi.vfs.VirtualFileEvent
-import com.intellij.openapi.vfs.VirtualFileMoveEvent
-import com.intellij.openapi.vfs.VirtualFileCopyEvent
-import com.intellij.openapi.vfs.VirtualFilePropertyEvent
-import com.intellij.openapi.util.SimpleModificationTracker
 import kotlin.platform.platformStatic
 
 class ModuleTypeCacheManager private constructor(project: Project) {
@@ -95,11 +90,8 @@ private fun computeType(module: Module) =
 private val DEFAULT_SCRIPT_NAME = "build.gradle"
 
 private fun isGradleModule(module: Module): Boolean {
-    val moduleFile = module.getModuleFile()
-    if (moduleFile == null){
-        return false
-    }
+    val moduleFile = module.getModuleDir()
 
-    val buildFile = moduleFile.getParent()?.findChild(DEFAULT_SCRIPT_NAME)
+    val buildFile = moduleFile?.findChild(DEFAULT_SCRIPT_NAME)
     return buildFile != null && buildFile.exists()
 }

@@ -16,7 +16,6 @@
 
 package org.jetbrains.kotlin.idea.refactoring.move.moveFilesOrDirectories
 
-import com.intellij.openapi.roots.JavaProjectRootsUtil
 import com.intellij.psi.*
 import com.intellij.psi.impl.light.LightElement
 import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFileHandler
@@ -38,6 +37,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.JetFile
 import org.jetbrains.kotlin.psi.JetNamedDeclaration
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+import org.mustbe.consulo.java.util.JavaProjectRootsUtil
 
 public class MoveKotlinFileHandler : MoveFileHandler() {
     // This is special 'PsiElement' whose purpose is to wrap MoveKotlinTopLevelDeclarationsProcessor
@@ -57,7 +57,7 @@ public class MoveKotlinFileHandler : MoveFileHandler() {
         val newPackage = newParent.getPackage() ?: return null
 
         val oldPackageName = getPackageFqName()
-        val newPackageName = FqName(newPackage.getQualifiedName())
+        val newPackageName = FqName(newPackage.getQualifiedName()!!)
         if (oldPackageName == newPackageName) return null
 
         return PackageNameInfo(oldPackageName, newPackageName)
@@ -85,7 +85,7 @@ public class MoveKotlinFileHandler : MoveFileHandler() {
 
     override fun canProcessElement(element: PsiFile?): Boolean {
         if (element is PsiCompiledElement || element !is JetFile) return false
-        return !JavaProjectRootsUtil.isOutsideJavaSourceRoot(element)
+        return !JavaProjectRootsUtil.isOutsideSourceRoot(element)
     }
 
     override fun findUsages(psiFile: PsiFile, newParent: PsiDirectory, searchInComments: Boolean, searchInNonJavaFiles: Boolean) =

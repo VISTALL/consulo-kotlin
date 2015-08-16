@@ -44,7 +44,7 @@ public class KotlinFoldingBuilder : CustomFoldingBuilder(), DumbAware {
         val imports = root.getImportDirectives()
         if (imports.size() > 1) {
             val importKeyword = imports.get(0).getFirstChild()
-            val startOffset = importKeyword.endOffset + 1
+            val startOffset = importKeyword!!.endOffset + 1
 
             val importList = root.getImportList()
             if (importList != null) {
@@ -112,7 +112,7 @@ public class KotlinFoldingBuilder : CustomFoldingBuilder(), DumbAware {
 
         val type = node.getElementType()
         if (type == JetTokens.BLOCK_COMMENT || type == KDocTokens.KDOC) {
-            if (isFirstElementInFile(node.getPsi())) {
+            if (isFirstElementInFile(node.getPsi()!!)) {
                 return settings.isCollapseFileHeader()
             }
         }

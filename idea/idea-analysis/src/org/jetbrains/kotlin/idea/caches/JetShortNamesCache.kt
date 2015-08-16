@@ -16,17 +16,32 @@
 
 package org.jetbrains.kotlin.idea.caches
 
-import com.intellij.util.containers.HashSet
-import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiField
 import com.intellij.psi.PsiClass
-import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
+import com.intellij.psi.PsiField
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.util.Processor
+import com.intellij.util.containers.HashSet
+import com.intellij.util.indexing.IdFilter
 import org.jetbrains.kotlin.idea.stubindex.JetClassShortNameIndex
-import org.jetbrains.kotlin.idea.stubindex.PackageIndexUtil
 import org.jetbrains.kotlin.idea.stubindex.JetFunctionShortNameIndex
+import org.jetbrains.kotlin.idea.stubindex.PackageIndexUtil
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
 
 // used in Upsource, what's why in idea-analysis module
 public class JetShortNamesCache(private val project: com.intellij.openapi.project.Project) : com.intellij.psi.search.PsiShortNamesCache() {
+    override fun processMethodsWithName(p0: String, p1: Processor<in PsiMethod>, p2: GlobalSearchScope, p3: IdFilter?): Boolean {
+        return true;
+    }
+
+    override fun processFieldsWithName(p0: String, p1: Processor<in PsiField>, p2: GlobalSearchScope, p3: IdFilter?): Boolean {
+        return true;
+    }
+
+    override fun processClassesWithName(p0: String, p1: Processor<in PsiClass>, p2: GlobalSearchScope, p3: IdFilter?): Boolean {
+        return true;
+    }
+
     companion object {
         public fun getKotlinInstance(project: com.intellij.openapi.project.Project): org.jetbrains.kotlin.idea.caches.JetShortNamesCache
                 = com.intellij.openapi.extensions.Extensions.getArea(project).getExtensionPoint<com.intellij.psi.search.PsiShortNamesCache>(com.intellij.psi.search.PsiShortNamesCache.EP_NAME).getExtensions()

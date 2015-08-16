@@ -19,16 +19,11 @@ package org.jetbrains.kotlin.asJava;
 import com.intellij.lang.Language;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.ElementPresentationUtil;
 import com.intellij.psi.impl.light.LightElement;
 import com.intellij.psi.impl.light.LightModifierList;
-import com.intellij.ui.RowIcon;
 import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 // Based on com.intellij.psi.impl.light.LightVariableBuilder
 public class LightVariableBuilder extends LightElement implements PsiVariable, NavigationItem {
@@ -103,16 +98,5 @@ public class LightVariableBuilder extends LightElement implements PsiVariable, N
     @Override
     public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
         throw new UnsupportedOperationException("setName is not implemented yet in org.jetbrains.kotlin.asJava.light.LightVariableBuilder");
-    }
-
-    @Override
-    protected boolean isVisibilitySupported() {
-        return true;
-    }
-
-    @Override
-    public Icon getElementIcon(int flags) {
-        RowIcon baseIcon = ElementPresentationUtil.createLayeredIcon(PlatformIcons.VARIABLE_ICON, this, false);
-        return ElementPresentationUtil.addVisibilityIcon(this, flags, baseIcon);
     }
 }

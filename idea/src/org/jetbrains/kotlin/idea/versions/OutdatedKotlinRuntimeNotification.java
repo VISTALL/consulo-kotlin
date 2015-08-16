@@ -18,7 +18,6 @@ package org.jetbrains.kotlin.idea.versions;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.intellij.framework.library.LibraryVersionProperties;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationListener;
@@ -41,6 +40,7 @@ import org.jetbrains.kotlin.idea.JetPluginUtil;
 import org.jetbrains.kotlin.idea.framework.JSLibraryStdPresentationProvider;
 import org.jetbrains.kotlin.idea.framework.JavaRuntimePresentationProvider;
 import org.jetbrains.kotlin.idea.framework.LibraryPresentationProviderUtil;
+import org.jetbrains.kotlin.idea.framework.LibraryVersionProperties;
 
 import javax.swing.event.HyperlinkEvent;
 import java.io.IOException;

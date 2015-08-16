@@ -24,6 +24,7 @@ import com.intellij.refactoring.BaseRefactoringProcessor
 import com.intellij.refactoring.RefactoringBundle
 import com.intellij.refactoring.changeSignature.ChangeSignatureProcessorBase
 import com.intellij.refactoring.changeSignature.ChangeSignatureUsageProcessor
+import com.intellij.refactoring.changeSignature.ChangeSignatureUsageProcessorEx
 import com.intellij.refactoring.changeSignature.JavaChangeSignatureUsageProcessor
 import com.intellij.refactoring.rename.RenameUtil
 import com.intellij.refactoring.rename.UnresolvableCollisionUsageInfo
@@ -62,9 +63,9 @@ public class JetChangeSignatureProcessor(project: Project,
     override fun preprocessUsages(refUsages: Ref<Array<UsageInfo>>): Boolean {
         val usageProcessors = ChangeSignatureUsageProcessor.EP_NAME.getExtensions()
 
-        if (!usageProcessors.all { it.setupDefaultValues(myChangeInfo, refUsages, myProject) }) return false
+        if (!usageProcessors.all { if (it is ChangeSignatureUsageProcessorEx) it.setupDefaultValues(myChangeInfo, refUsages, myProject) else false }) return false
 
-        val conflictDescriptions = object: MultiMap<PsiElement, String>() {
+        val conflictDescriptions = object : MultiMap<PsiElement, String>() {
             override fun createCollection() = LinkedHashSet<String>()
         }
         usageProcessors.forEach { conflictDescriptions.putAllValues(it.findConflicts(myChangeInfo, refUsages)) }

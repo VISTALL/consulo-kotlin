@@ -16,14 +16,11 @@
 
 package org.jetbrains.kotlin.idea.core
 
-import com.intellij.psi.JavaDirectoryService
-import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiPackage
+import com.intellij.psi.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.JetFile
 
-public fun PsiDirectory.getPackage(): PsiPackage? = JavaDirectoryService.getInstance()!!.getPackage(this)
+public fun PsiDirectory.getPackage(): PsiJavaPackage? = JavaDirectoryService.getInstance()!!.getPackage(this)
 
 public fun PsiFile.getFqNameByDirectory(): FqName {
     val qualifiedNameByDirectory = getParent()?.getPackage()?.getQualifiedName()

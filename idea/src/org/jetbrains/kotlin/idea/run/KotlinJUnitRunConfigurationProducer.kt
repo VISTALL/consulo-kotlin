@@ -16,31 +16,23 @@
 
 package org.jetbrains.kotlin.idea.run
 
-import com.intellij.execution.*
-import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.execution.actions.RunConfigurationProducer
-import com.intellij.execution.configurations.ModuleBasedConfiguration
-import com.intellij.execution.junit.JUnitConfiguration
-import com.intellij.execution.junit.JUnitConfigurationType
+import com.intellij.execution.Location
+import com.intellij.execution.PsiLocation
 import com.intellij.execution.junit.JUnitUtil
-import com.intellij.execution.junit.PatternConfigurationProducer
-import com.intellij.openapi.project.DumbService
-import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.asJava.LightClassUtil
-import org.jetbrains.kotlin.idea.project.ProjectStructureUtil
-import org.jetbrains.kotlin.idea.util.ProjectRootsUtil
 import org.jetbrains.kotlin.psi.JetClass
 import org.jetbrains.kotlin.psi.JetFile
 import org.jetbrains.kotlin.psi.JetFunction
 import org.jetbrains.kotlin.psi.JetNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.getParentOfType
 
-public class KotlinJUnitRunConfigurationProducer : RunConfigurationProducer<JUnitConfiguration>(JUnitConfigurationType.getInstance()) {
-    override fun isConfigurationFromContext(configuration: JUnitConfiguration,
+//TODO [VISTALL] JUNIT depend
+public class KotlinJUnitRunConfigurationProducer /*: RunConfigurationProducer<JUnitConfiguration>(JUnitConfigurationType.getInstance()) */{
+    /*override fun isConfigurationFromContext(configuration: JUnitConfiguration,
                                             context: ConfigurationContext): Boolean {
         if (RunConfigurationProducer.getInstance(javaClass<PatternConfigurationProducer>()).isMultipleElementsSelected(context)) {
             return false
@@ -70,8 +62,8 @@ public class KotlinJUnitRunConfigurationProducer : RunConfigurationProducer<JUni
         val configurationModule = configuration.getConfigurationModule().getModule()
         return configurationModule == context.getLocation()?.getModule() || configurationModule == predefinedModule
     }
-
-    override fun setupConfigurationFromContext(configuration: JUnitConfiguration,
+*/
+   /* override fun setupConfigurationFromContext(configuration: JUnitConfiguration,
                                                context: ConfigurationContext,
                                                sourceElement: Ref<PsiElement>): Boolean {
         if (DumbService.getInstance(context.getProject()).isDumb()) return false
@@ -112,7 +104,7 @@ public class KotlinJUnitRunConfigurationProducer : RunConfigurationProducer<JUni
         }
 
         return false
-    }
+    }*/
 
     private fun getTestMethodLocation(leaf: PsiElement): Location<PsiMethod>? {
         val function = leaf.getParentOfType<JetNamedFunction>(false) ?: return null

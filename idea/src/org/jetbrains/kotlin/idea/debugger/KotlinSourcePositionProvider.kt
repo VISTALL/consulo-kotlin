@@ -17,7 +17,6 @@
 package org.jetbrains.kotlin.idea.debugger
 
 import com.intellij.debugger.SourcePosition
-import com.intellij.debugger.engine.SourcePositionProvider
 import com.intellij.debugger.impl.DebuggerContextImpl
 import com.intellij.debugger.impl.DebuggerContextUtil
 import com.intellij.debugger.impl.PositionUtil
@@ -28,14 +27,16 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.util.PsiTreeUtil
-import com.sun.jdi.AbsentInformationException
-import com.sun.jdi.ClassNotPreparedException
-import com.sun.jdi.ReferenceType
+import consulo.internal.com.sun.jdi.AbsentInformationException
+import consulo.internal.com.sun.jdi.ClassNotPreparedException
+import consulo.internal.com.sun.jdi.ReferenceType
 import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
 import org.jetbrains.kotlin.idea.debugger.evaluate.KotlinCodeFragmentFactory
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.JetClassOrObject
+import org.jetbrains.kotlin.psi.JetFile
+import org.jetbrains.kotlin.psi.JetPsiFactory
+import org.jetbrains.kotlin.psi.JetSimpleNameExpression
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.resolve.BindingContextUtils
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
@@ -43,8 +44,9 @@ import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
 import org.jetbrains.kotlin.resolve.source.getPsi
 
-public class KotlinSourcePositionProvider: SourcePositionProvider() {
-    override fun computeSourcePosition(descriptor: NodeDescriptor, project: Project, context: DebuggerContextImpl, nearest: Boolean): SourcePosition? {
+public class KotlinSourcePositionProvider/*: SourcePositionProvider()*/ {
+    //TODO [VISTALL] SourcePositionProvider
+    /*override*/ fun computeSourcePosition(descriptor: NodeDescriptor, project: Project, context: DebuggerContextImpl, nearest: Boolean): SourcePosition? {
         if (context.getFrameProxy() == null) return null
 
         if (descriptor is FieldDescriptor) {

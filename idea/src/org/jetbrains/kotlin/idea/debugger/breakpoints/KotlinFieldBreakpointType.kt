@@ -59,7 +59,7 @@ public class KotlinFieldBreakpointType : JavaBreakpointType<KotlinPropertyBreakp
     override fun canPutAt(file: VirtualFile, line: Int, project: Project): Boolean {
         val psiFile = PsiManager.getInstance(project).findFile(file)
 
-        if (psiFile == null || psiFile.getVirtualFile().getFileType() != JetFileType.INSTANCE) {
+        if (psiFile == null || psiFile.getVirtualFile()!!.getFileType() != JetFileType.INSTANCE) {
             return false
         }
 
@@ -100,7 +100,7 @@ public class KotlinFieldBreakpointType : JavaBreakpointType<KotlinPropertyBreakp
         return canPutAt
     }
 
-    override fun getPriority() = 120
+    //override fun getPriority() = 120
 
     override fun createBreakpointProperties(file: VirtualFile, line: Int): KotlinPropertyBreakpointProperties? {
         return KotlinPropertyBreakpointProperties()
@@ -166,7 +166,7 @@ public class KotlinFieldBreakpointType : JavaBreakpointType<KotlinPropertyBreakp
         return runWriteAction {
             XDebuggerManager.getInstance(project).getBreakpointManager().addLineBreakpoint(
                     this,
-                    file.getVirtualFile().getUrl(),
+                    file.getVirtualFile()!!.getUrl(),
                     line,
                     KotlinPropertyBreakpointProperties(fieldName, className)
             )

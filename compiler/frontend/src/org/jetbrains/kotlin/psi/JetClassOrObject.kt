@@ -58,14 +58,14 @@ abstract public class JetClassOrObject : JetTypeParameterListOwnerStub<KotlinCla
             EditCommaSeparatedListHelper.removeItem<JetElement>(delegationSpecifier)
         }
         else {
-            deleteChildRange(findChildByType<PsiElement>(JetTokens.COLON) ?: specifierList, specifierList)
+            deleteChildRange(findChildByType(JetTokens.COLON) ?: specifierList, specifierList)
         }
     }
 
     public fun getAnonymousInitializers(): List<JetClassInitializer> = getBody()?.getAnonymousInitializers().orEmpty()
 
     public fun getNameAsDeclaration(): JetObjectDeclarationName? =
-            findChildByType<PsiElement>(JetNodeTypes.OBJECT_DECLARATION_NAME) as JetObjectDeclarationName?
+            findChildByType(JetNodeTypes.OBJECT_DECLARATION_NAME) as JetObjectDeclarationName?
 
     public fun getBody(): JetClassBody? = getStubOrPsiChild(JetStubElementTypes.CLASS_BODY)
 

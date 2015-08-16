@@ -26,7 +26,6 @@ import com.intellij.psi.ClassFileViewProvider;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.compiled.ClsClassImpl;
 import com.intellij.psi.impl.compiled.ClsFileImpl;
 import com.intellij.psi.impl.java.stubs.PsiJavaFileStub;
@@ -376,7 +375,7 @@ public class IDELightClassGenerationSupport extends LightClassGenerationSupport 
             return null;
         }
         PsiManager manager = PsiManager.getInstance(decompiledKotlinFile.getProject());
-        ClsFileImpl fakeFile = new ClsFileImpl((PsiManagerImpl) manager, new ClassFileViewProvider(manager, virtualFile)) {
+        ClsFileImpl fakeFile = new ClsFileImpl(new ClassFileViewProvider(manager, virtualFile)) {
             @NotNull
             @Override
             public PsiElement getNavigationElement() {

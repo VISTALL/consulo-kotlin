@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.idea.core.util
 import com.intellij.codeInsight.generation.ClassMemberWithElement
 import com.intellij.codeInsight.generation.MemberChooserObject
 import com.intellij.codeInsight.generation.PsiElementMemberChooserObject
+import com.intellij.ide.IconDescriptorUpdaters
 import com.intellij.openapi.util.Iconable
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
@@ -92,7 +93,7 @@ public open class DescriptorMemberChooserObject(
                 }
                 else {
                     // it is better to show java icons for java code
-                    return element.getIcon(flags)
+                    return IconDescriptorUpdaters.getIcon(element, flags)
                 }
             }
             else {

@@ -16,12 +16,10 @@
 
 package org.jetbrains.kotlin.psi;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderFactory;
+import com.intellij.lang.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.LanguageVersionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.parsing.JetParser;
 import org.jetbrains.kotlin.psi.stubs.elements.JetFileElementType;
@@ -43,7 +41,8 @@ public class JetTypeCodeFragmentType extends JetFileElementType {
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
         Language languageForParser = getLanguageForParser(psi);
-        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser, chameleon.getChars());
+        LanguageVersion languageVersion = LanguageVersionUtil.findDefaultVersion(languageForParser);
+        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser, languageVersion, chameleon.getChars());
         return JetParser.parseTypeCodeFragment(builder).getFirstChildNode();
     }
 }

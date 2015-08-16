@@ -37,11 +37,12 @@ import com.intellij.psi.impl.PsiFileFactoryImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.ExceptionUtil
-import com.sun.jdi.InvocationException
-import com.sun.jdi.ObjectReference
-import com.sun.jdi.VMDisconnectedException
-import com.sun.jdi.VirtualMachine
-import com.sun.jdi.request.EventRequest
+import com.intellij.util.LanguageVersionUtil
+import consulo.internal.com.sun.jdi.InvocationException
+import consulo.internal.com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi.VMDisconnectedException
+import consulo.internal.com.sun.jdi.VirtualMachine
+import consulo.internal.com.sun.jdi.request.EventRequest
 import org.jetbrains.eval4j.*
 import org.jetbrains.eval4j.jdi.JDIEval
 import org.jetbrains.eval4j.jdi.asJdiValue
@@ -82,7 +83,8 @@ import org.jetbrains.kotlin.types.Flexibility
 import org.jetbrains.org.objectweb.asm.*
 import org.jetbrains.org.objectweb.asm.Opcodes.ASM5
 import org.jetbrains.org.objectweb.asm.tree.MethodNode
-import java.util.*
+import java.util.Collections
+import java.util.HashMap
 
 private val RECEIVER_NAME = "\$receiver"
 private val THIS_NAME = "this"
@@ -280,7 +282,7 @@ class KotlinEvaluator(val codeFragment: JetCodeFragment,
             return argumentValue
         }
 
-        private fun InterpreterResult.toJdiValue(vm: VirtualMachine): com.sun.jdi.Value? {
+        private fun InterpreterResult.toJdiValue(vm: VirtualMachine): consulo.internal.com.sun.jdi.Value? {
             val jdiValue = when (this) {
                 is ValueReturned -> result
                 is ExceptionThrown -> {
@@ -519,7 +521,7 @@ private fun PsiElement.createJetFile(fileName: String, fileText: String): JetFil
     val virtualFile = LightVirtualFile(fileName, JetLanguage.INSTANCE, fileText)
     virtualFile.setCharset(CharsetToolkit.UTF8_CHARSET)
     val jetFile = (PsiFileFactory.getInstance(getProject()) as PsiFileFactoryImpl)
-            .trySetupPsiForFile(virtualFile, JetLanguage.INSTANCE, true, false) as JetFile
+            .trySetupPsiForFile(virtualFile, JetLanguage.INSTANCE, LanguageVersionUtil.findDefaultVersion(JetLanguage.INSTANCE), true, false) as JetFile
     jetFile.analysisContext = this
     return jetFile
 }

@@ -24,7 +24,6 @@ import com.intellij.openapi.util.NullableLazyValue;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.PsiPackage;
 import com.intellij.psi.impl.compiled.ClsFileImpl;
 import com.intellij.psi.impl.java.stubs.PsiJavaFileStub;
 import com.intellij.psi.impl.light.LightClass;
@@ -54,7 +53,6 @@ import org.jetbrains.kotlin.resolve.DescriptorUtils;
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName;
 import org.jetbrains.kotlin.types.JetType;
 
-import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -311,7 +309,7 @@ public class KotlinLightClassForExplicitDeclaration extends KotlinWrappingLightC
                     String packageName = getPackageName();
                     if (!packageName.isEmpty()) return true;
 
-                    PsiPackage aPackage = JavaPsiFacade.getInstance(myManager.getProject()).findPackage(packageName);
+                    PsiJavaPackage aPackage = JavaPsiFacade.getInstance(myManager.getProject()).findPackage(packageName);
                     if (aPackage != null && !aPackage.processDeclarations(processor, state, null, place)) return false;
 
                     return true;
@@ -334,11 +332,6 @@ public class KotlinLightClassForExplicitDeclaration extends KotlinWrappingLightC
     @Override
     public boolean isEquivalentTo(PsiElement another) {
         return another instanceof PsiClass && Comparing.equal(((PsiClass) another).getQualifiedName(), getQualifiedName());
-    }
-
-    @Override
-    public Icon getElementIcon(int flags) {
-        throw new UnsupportedOperationException("This should be done byt JetIconProvider");
     }
 
     @Override

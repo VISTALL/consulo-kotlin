@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.idea;
 
+import com.intellij.ide.IconDescriptorUpdaters;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
@@ -39,7 +40,7 @@ public final class JetDescriptorIconProvider {
     @NotNull
     public static Icon getIcon(@NotNull DeclarationDescriptor descriptor, @Nullable PsiElement declaration, @Iconable.IconFlags int flags) {
         if (declaration != null && !(declaration instanceof JetElement)) {
-            return declaration.getIcon(flags);
+            return IconDescriptorUpdaters.getIcon(declaration, flags);
         }
 
         Icon result = getBaseIcon(descriptor);

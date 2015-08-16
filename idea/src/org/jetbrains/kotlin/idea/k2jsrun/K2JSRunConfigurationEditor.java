@@ -19,9 +19,9 @@ package org.jetbrains.kotlin.idea.k2jsrun;
     import com.intellij.ide.browsers.BrowserFamily;
 import com.intellij.ide.browsers.WebBrowser;
 import com.intellij.ide.browsers.WebBrowserManager;
+import com.intellij.ide.highlighter.HtmlFileType;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -133,7 +133,7 @@ public final class K2JSRunConfigurationEditor extends SettingsEditor<K2JSRunConf
     }
 
     private void setUpChooseHtmlToShow() {
-        FileChooserDescriptor fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(StdFileTypes.HTML);
+        FileChooserDescriptor fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(HtmlFileType.INSTANCE);
         fileChooserDescriptor.setRoots(ProjectRootManager.getInstance(project).getContentRoots());
         htmlChooseFile.addBrowseFolderListener("Choose file to show after translation is finished", null, project, fileChooserDescriptor);
     }

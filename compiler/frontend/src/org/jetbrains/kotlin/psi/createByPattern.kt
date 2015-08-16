@@ -18,14 +18,15 @@ package org.jetbrains.kotlin.psi
 
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.impl.source.codeStyle.CodeEditUtil
-import org.jetbrains.kotlin.lexer.JetTokens
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.psi.psiUtil.*
+import org.jetbrains.kotlin.psi.psiUtil.PsiChildRange
+import org.jetbrains.kotlin.psi.psiUtil.endOffset
+import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
+import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.renderer.render
 import java.util.ArrayList
 import java.util.HashMap
@@ -72,7 +73,7 @@ private object PsiChildRangeArgumentType : PsiElementPlaceholderArgumentType<Psi
 
             codeStyleManager.reformatNewlyAddedElement(first.getNode().getTreeParent(), first.getNode())
             if (last != first) {
-                codeStyleManager.reformatNewlyAddedElement(last.getNode().getTreeParent(), last.getNode())
+                codeStyleManager.reformatNewlyAddedElement(last!!.getNode().getTreeParent(), last.getNode())
             }
         }
     }

@@ -49,10 +49,10 @@ public class JetHighlightingColors {
     public static final TextAttributesKey KDOC_LINK = createTextAttributesKey("KDOC_LINK", DefaultLanguageHighlighterColors.DOC_COMMENT_TAG_VALUE);
 
     // class kinds
-    public static final TextAttributesKey CLASS = createTextAttributesKey("KOTLIN_CLASS", CodeInsightColors.CLASS_NAME_ATTRIBUTES);
-    public static final TextAttributesKey TYPE_PARAMETER = createTextAttributesKey("KOTLIN_TYPE_PARAMETER", CodeInsightColors.TYPE_PARAMETER_NAME_ATTRIBUTES);
-    public static final TextAttributesKey ABSTRACT_CLASS = createTextAttributesKey("KOTLIN_ABSTRACT_CLASS", CodeInsightColors.ABSTRACT_CLASS_NAME_ATTRIBUTES);
-    public static final TextAttributesKey TRAIT = createTextAttributesKey("KOTLIN_TRAIT", CodeInsightColors.INTERFACE_NAME_ATTRIBUTES);
+    public static final TextAttributesKey CLASS = createTextAttributesKey("KOTLIN_CLASS", JavaHighlightingColors.CLASS_NAME);
+    public static final TextAttributesKey TYPE_PARAMETER = createTextAttributesKey("KOTLIN_TYPE_PARAMETER", JavaHighlightingColors.TYPE_PARAMETER_NAME);
+    public static final TextAttributesKey ABSTRACT_CLASS = createTextAttributesKey("KOTLIN_ABSTRACT_CLASS", JavaHighlightingColors.ABSTRACT_CLASS_NAME);
+    public static final TextAttributesKey TRAIT = createTextAttributesKey("KOTLIN_TRAIT", JavaHighlightingColors.INTERFACE_NAME);
     public static final TextAttributesKey ANNOTATION = createTextAttributesKey("KOTLIN_ANNOTATION");
     public static final TextAttributesKey OBJECT = createTextAttributesKey("KOTLIN_OBJECT", CLASS);
     public static final TextAttributesKey ENUM_ENTRY = createTextAttributesKey("KOTLIN_ENUM_ENTRY", CodeInsightColors.INSTANCE_FIELD_ATTRIBUTES);

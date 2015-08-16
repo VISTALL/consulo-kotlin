@@ -16,29 +16,9 @@
 
 package org.jetbrains.kotlin.idea.run;
 
-import com.intellij.execution.JavaRunConfigurationExtensionManager;
-import com.intellij.execution.Location;
-import com.intellij.execution.PsiLocation;
-import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Ref;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.util.PsiClassUtil;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.theoryinpractice.testng.configuration.TestNGConfiguration;
-import com.theoryinpractice.testng.configuration.TestNGConfigurationProducer;
-import com.theoryinpractice.testng.util.TestNGUtil;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.asJava.LightClassUtil;
-import org.jetbrains.kotlin.idea.project.ProjectStructureUtil;
-import org.jetbrains.kotlin.idea.util.ProjectRootsUtil;
-import org.jetbrains.kotlin.psi.*;
-
-public class JetTestNgConfigurationProducer extends TestNGConfigurationProducer {
-    @Override
+//TODO [VISTALL] TestNG depend
+public class JetTestNgConfigurationProducer/* extends TestNGConfigurationProducer*/ {
+  /*  @Override
     protected boolean setupConfigurationFromContext(
             TestNGConfiguration configuration, ConfigurationContext context, Ref<PsiElement> sourceElement
     ) {
@@ -148,5 +128,5 @@ public class JetTestNgConfigurationProducer extends TestNGConfigurationProducer 
         }
 
         return tempSingleDeclaration;
-    }
+    }*/
 }

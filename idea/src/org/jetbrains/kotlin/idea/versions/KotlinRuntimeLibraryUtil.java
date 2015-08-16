@@ -27,9 +27,9 @@ import com.intellij.openapi.roots.*;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.util.ArchiveVfsUtil;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.ProjectScope;
 import com.intellij.util.CommonProcessors;
@@ -128,7 +128,7 @@ public class KotlinRuntimeLibraryUtil {
             VirtualFile jdkAnnotationsJar = LocalFileSystem.getInstance().findFileByIoFile(annotationsPath);
             if (jdkAnnotationsJar != null) {
                 SdkModificator modificator = sdk.getSdkModificator();
-                VirtualFile jarRootForLocalFile = JarFileSystem.getInstance().getJarRootForLocalFile(jdkAnnotationsJar);
+                VirtualFile jarRootForLocalFile = ArchiveVfsUtil.getJarRootForLocalFile(jdkAnnotationsJar);
                 if (isAdd) {
                     modificator.addRoot(jarRootForLocalFile, AnnotationOrderRootType.getInstance());
                 }
@@ -297,7 +297,7 @@ public class KotlinRuntimeLibraryUtil {
     public static VirtualFile getLocalJar(@Nullable VirtualFile kotlinRuntimeJar) {
         if (kotlinRuntimeJar == null) return null;
 
-        VirtualFile localJarFile = JarFileSystem.getInstance().getVirtualFileForJar(kotlinRuntimeJar);
+        VirtualFile localJarFile = ArchiveVfsUtil.getArchiveRootForLocalFile(kotlinRuntimeJar);
         if (localJarFile != null) {
             return localJarFile;
         }

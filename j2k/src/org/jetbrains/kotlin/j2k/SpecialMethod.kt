@@ -16,7 +16,7 @@
 
 package org.jetbrains.kotlin.j2k
 
-import com.intellij.psi.CommonClassNames.JAVA_LANG_OBJECT
+import org.mustbe.consulo.java.util.JavaClassNames.JAVA_LANG_OBJECT
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceExpression

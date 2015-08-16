@@ -24,7 +24,6 @@ import com.google.gwt.dev.js.rhino.CodePosition
 import com.google.gwt.dev.js.rhino.ErrorReporter
 import com.google.gwt.dev.js.rhino.Utils.isEndOfLine
 import com.intellij.openapi.util.TextRange
-import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
 import org.jetbrains.kotlin.diagnostics.DiagnosticFactory1
@@ -140,7 +139,7 @@ class JsCodeErrorReporter(
 
     private val CodePosition.absoluteOffset: Int
         get() {
-            val quotesLength = nodeToReport.getFirstChild().getTextLength()
+            val quotesLength = nodeToReport.getFirstChild()!!.getTextLength()
             return nodeToReport.getTextOffset() + quotesLength + code.offsetOf(this)
         }
 }

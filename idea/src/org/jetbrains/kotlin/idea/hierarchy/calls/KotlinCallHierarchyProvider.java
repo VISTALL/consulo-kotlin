@@ -16,7 +16,7 @@
 
 package org.jetbrains.kotlin.idea.hierarchy.calls;
 
-import com.intellij.codeInsight.TargetElementUtilBase;
+import com.intellij.codeInsight.TargetElementUtil;
 import com.intellij.ide.hierarchy.CallHierarchyBrowserBase;
 import com.intellij.ide.hierarchy.HierarchyBrowser;
 import com.intellij.ide.hierarchy.HierarchyProvider;
@@ -51,7 +51,7 @@ public class KotlinCallHierarchyProvider implements HierarchyProvider {
 
             if (!ProjectRootsUtil.isInProjectOrLibSource(file)) return null;
 
-            return TargetElementUtilBase.findTargetElement(editor, TargetElementUtilBase.getInstance().getAllAccepted());
+            return TargetElementUtil.findTargetElement(editor, TargetElementUtil.getAllAccepted());
         }
 
         return CommonDataKeys.PSI_ELEMENT.getData(dataContext);

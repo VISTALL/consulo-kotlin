@@ -16,28 +16,28 @@
 
 package org.jetbrains.kotlin.idea.debugger
 
-import com.intellij.debugger.engine.FrameExtraVariablesProvider
 import com.intellij.debugger.SourcePosition
+import com.intellij.debugger.engine.FrameExtraVariablesProvider
+import com.intellij.debugger.engine.evaluation.CodeFragmentKind
 import com.intellij.debugger.engine.evaluation.EvaluationContext
 import com.intellij.debugger.engine.evaluation.TextWithImports
-import com.intellij.debugger.settings.DebuggerSettings
 import com.intellij.debugger.engine.evaluation.TextWithImportsImpl
-import com.intellij.debugger.engine.evaluation.CodeFragmentKind
-import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.psi.PsiElement
-import com.intellij.openapi.util.TextRange
+import com.intellij.debugger.settings.DebuggerSettings
 import com.intellij.openapi.editor.Document
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.util.text.CharArrayUtil
 import com.intellij.psi.util.PsiTreeUtil
-import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.idea.util.application.runReadAction
-import org.jetbrains.kotlin.resolve.BindingContext
+import com.intellij.util.text.CharArrayUtil
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.idea.JetFileType
-import org.jetbrains.kotlin.idea.codeInsight.CodeInsightUtils
-import java.util.LinkedHashSet
 import org.jetbrains.kotlin.idea.caches.resolve.analyzeFully
+import org.jetbrains.kotlin.idea.codeInsight.CodeInsightUtils
+import org.jetbrains.kotlin.idea.util.application.runReadAction
+import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.resolve.BindingContext
+import java.util.LinkedHashSet
 
 public class KotlinFrameExtraVariablesProvider : FrameExtraVariablesProvider {
     override fun isAvailable(sourcePosition: SourcePosition?, evalContext: EvaluationContext?): Boolean {
@@ -46,7 +46,7 @@ public class KotlinFrameExtraVariablesProvider : FrameExtraVariablesProvider {
         return sourcePosition.getFile().getFileType() == JetFileType.INSTANCE && DebuggerSettings.getInstance().AUTO_VARIABLES_MODE
     }
 
-    override fun collectVariables(sourcePosition: SourcePosition?, evalContext: EvaluationContext?, alreadyCollected: Set<String>?
+   override fun collectVariables(sourcePosition: SourcePosition?, evalContext: EvaluationContext?, alreadyCollected: Set<String>?
     ): Set<TextWithImports>? {
         if (sourcePosition != null) {
             return runReadAction { findAdditionalExpressions(sourcePosition) }

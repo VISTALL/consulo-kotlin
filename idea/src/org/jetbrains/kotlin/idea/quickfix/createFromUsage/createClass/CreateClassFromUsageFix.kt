@@ -24,7 +24,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiPackage
+import com.intellij.psi.PsiJavaPackage
 import org.jetbrains.kotlin.idea.JetFileType
 import org.jetbrains.kotlin.idea.codeInsight.CodeInsightUtils
 import org.jetbrains.kotlin.idea.core.refactoring.canRefactor
@@ -78,7 +78,7 @@ public class CreateClassFromUsageFix<E : JetElement>(
     }
 
     override fun invoke(project: Project, editor: Editor?, file: JetFile) {
-        fun createFileByPackage(psiPackage: PsiPackage): JetFile? {
+        fun createFileByPackage(psiPackage: PsiJavaPackage): JetFile? {
             val directories = psiPackage.directories.filter { it.canRefactor() }
             assert (directories.isNotEmpty()) { "Package '${psiPackage.qualifiedName}' must be refactorable" }
 
@@ -113,7 +113,7 @@ public class CreateClassFromUsageFix<E : JetElement>(
             val targetParent =
                     when (targetParent) {
                         is JetElement, is PsiClass -> targetParent
-                        is PsiPackage -> createFileByPackage(targetParent)
+                        is PsiJavaPackage -> createFileByPackage(targetParent)
                         else -> throw AssertionError("Unexpected element: " + targetParent.text)
                     } ?: return
 

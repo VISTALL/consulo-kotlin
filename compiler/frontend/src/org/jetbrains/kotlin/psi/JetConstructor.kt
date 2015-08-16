@@ -46,7 +46,7 @@ public abstract class JetConstructor<T : JetConstructor<T>> : JetDeclarationStub
     throws(IncorrectOperationException::class)
     override fun setTypeReference(typeRef: JetTypeReference?) = throw IncorrectOperationException("setTypeReference to constructor")
 
-    override fun getColon() = findChildByType<PsiElement>(JetTokens.COLON)
+    override fun getColon() = findChildByType(JetTokens.COLON)
 
     override fun getBodyExpression(): JetBlockExpression? = null
 

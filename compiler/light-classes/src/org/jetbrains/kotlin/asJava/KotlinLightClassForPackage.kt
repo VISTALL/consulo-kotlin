@@ -33,9 +33,8 @@ import org.jetbrains.annotations.NonNls
 import org.jetbrains.kotlin.idea.JetLanguage
 import org.jetbrains.kotlin.load.kotlin.PackageClassUtils
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.JetFile
-import javax.swing.*
 import org.jetbrains.kotlin.psi.JetClassOrObject
+import org.jetbrains.kotlin.psi.JetFile
 
 public class KotlinLightClassForPackage private constructor(
         manager: PsiManager,
@@ -177,8 +176,6 @@ public class KotlinLightClassForPackage private constructor(
     override fun isEquivalentTo(another: PsiElement?): Boolean {
         return another is PsiClass && Comparing.equal(another.getQualifiedName(), getQualifiedName())
     }
-
-    override fun getElementIcon(flags: Int): Icon? = throw UnsupportedOperationException("This should be done by JetIconProvider")
 
     override fun hashCode() = hashCode
 

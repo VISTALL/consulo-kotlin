@@ -17,6 +17,7 @@
 package org.jetbrains.kotlin.idea.hierarchy.calls;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.IconDescriptorUpdaters;
 import com.intellij.ide.IdeBundle;
 import com.intellij.ide.hierarchy.HierarchyNodeDescriptor;
 import com.intellij.ide.hierarchy.JavaHierarchyUtil;
@@ -106,7 +107,7 @@ public class KotlinCallHierarchyNodeDescriptor extends HierarchyNodeDescriptor i
             return true;
         }
 
-        Icon newIcon = targetElement.getIcon(flags);
+        Icon newIcon = IconDescriptorUpdaters.getIcon(targetElement, flags);
         if (changes && myIsBase) {
             LayeredIcon icon = new LayeredIcon(2);
             icon.setIcon(newIcon, 0);

@@ -16,7 +16,7 @@
 
 package org.jetbrains.kotlin.idea.hierarchy;
 
-import com.intellij.codeInsight.TargetElementUtilBase;
+import com.intellij.codeInsight.TargetElementUtil;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Editor;
@@ -51,7 +51,7 @@ public class HierarchyUtils {
 
             if (!ProjectRootsUtil.isInProjectOrLibSource(file)) return null;
 
-            return TargetElementUtilBase.findTargetElement(editor, TargetElementUtilBase.getInstance().getAllAccepted());
+            return TargetElementUtil.findTargetElement(editor, TargetElementUtil.getAllAccepted());
         }
 
         return CommonDataKeys.PSI_ELEMENT.getData(dataContext);

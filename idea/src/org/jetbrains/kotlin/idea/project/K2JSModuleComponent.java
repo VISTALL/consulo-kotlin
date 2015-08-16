@@ -21,14 +21,13 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
-import com.intellij.openapi.roots.impl.storage.ClassPathStorageUtil;
 import org.jetbrains.annotations.NotNull;
 
 @Deprecated
 @State(
         name = "K2JSModule",
         storages = @Storage(
-          id = ClassPathStorageUtil.DEFAULT_STORAGE,
+          id = "default",
           file = "$MODULE_FILE$"
         )
 )

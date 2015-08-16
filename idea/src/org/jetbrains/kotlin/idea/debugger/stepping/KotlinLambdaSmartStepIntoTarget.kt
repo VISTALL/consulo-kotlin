@@ -16,25 +16,19 @@
 
 package org.jetbrains.kotlin.idea.debugger.stepping
 
-import com.intellij.debugger.actions.MethodSmartStepTarget
 import com.intellij.debugger.actions.SmartStepTarget
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiMethod
 import com.intellij.util.Range
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
-import org.jetbrains.kotlin.idea.JetIcons
 import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.psi.JetElement
 import org.jetbrains.kotlin.psi.JetFunctionLiteralExpression
 import org.jetbrains.kotlin.types.expressions.OperatorConventions
-import javax.swing.Icon
 
 public class KotlinLambdaSmartStepTarget(
         label: String,
         highlightElement: JetFunctionLiteralExpression,
         lines: Range<Int>
 ): SmartStepTarget(label, highlightElement, true, lines) {
-    override fun getIcon() = JetIcons.LAMBDA
+    //FIXME [VISTALL] override fun getIcon() = JetIcons.LAMBDA
 
     fun getLambda() = getHighlightElement() as JetFunctionLiteralExpression
 

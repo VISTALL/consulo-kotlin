@@ -16,32 +16,34 @@
 
 package org.jetbrains.kotlin.idea.coverage
 
-import com.intellij.coverage.JavaCoverageEngineExtension
-import com.intellij.execution.configurations.RunConfigurationBase
-import org.jetbrains.kotlin.idea.run.JetRunConfiguration
-import com.intellij.psi.PsiFile
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.coverage.CoverageSuitesBundle
-import java.io.File
-import org.jetbrains.kotlin.psi.JetFile
-import com.intellij.openapi.roots.ProjectRootManager
-import com.intellij.psi.PsiClass
-import com.intellij.openapi.util.text.StringUtil
-import com.intellij.psi.PsiNamedElement
-import com.intellij.coverage.PackageAnnotator
-import com.intellij.openapi.module.ModuleUtilCore
-import com.intellij.openapi.roots.CompilerModuleExtension
 import com.intellij.coverage.JavaCoverageAnnotator
-import org.jetbrains.kotlin.psi.JetClassOrObject
-import org.jetbrains.kotlin.load.kotlin.PackagePartClassUtils
-import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.coverage.JavaCoverageEngineExtension
+import com.intellij.coverage.PackageAnnotator
+import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.diagnostic.Logger
-import org.jetbrains.kotlin.load.kotlin.PackageClassUtils
-import org.jetbrains.kotlin.load.kotlin.KotlinBinaryClassCache
-import com.intellij.openapi.vfs.LocalFileSystem
-import org.jetbrains.kotlin.load.kotlin.header.KotlinClassHeader
+import com.intellij.openapi.module.ModuleUtilCore
+import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.util.io.FileUtilRt
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiNamedElement
+import org.consulo.compiler.ModuleCompilerPathsManager
+import org.jetbrains.kotlin.idea.run.JetRunConfiguration
 import org.jetbrains.kotlin.idea.util.application.runReadAction
+import org.jetbrains.kotlin.load.kotlin.KotlinBinaryClassCache
+import org.jetbrains.kotlin.load.kotlin.PackageClassUtils
+import org.jetbrains.kotlin.load.kotlin.PackagePartClassUtils
+import org.jetbrains.kotlin.load.kotlin.header.KotlinClassHeader
+import org.jetbrains.kotlin.psi.JetClassOrObject
+import org.jetbrains.kotlin.psi.JetFile
+import org.mustbe.consulo.roots.impl.ProductionContentFolderTypeProvider
+import org.mustbe.consulo.roots.impl.TestContentFolderTypeProvider
+import java.io.File
 
 public class KotlinCoverageExtension(): JavaCoverageEngineExtension() {
     private val LOG = Logger.getInstance(javaClass<KotlinCoverageExtension>())
@@ -60,7 +62,7 @@ public class KotlinCoverageExtension(): JavaCoverageEngineExtension() {
     }
 
     // Implements API added in IDEA 14.1
-    override fun getSummaryCoverageInfo(coverageAnnotator: JavaCoverageAnnotator,
+    /*override*/ fun getSummaryCoverageInfo(coverageAnnotator: JavaCoverageAnnotator,
                                element: PsiNamedElement): PackageAnnotator.ClassCoverageInfo? {
         if (element !is JetFile) {
             return null
@@ -72,13 +74,13 @@ public class KotlinCoverageExtension(): JavaCoverageEngineExtension() {
     }
 
     // Implements API added in IDEA 14.1
-    override fun keepCoverageInfoForClassWithoutSource(bundle: CoverageSuitesBundle, classFile: File): Boolean {
+    /*override*/ fun keepCoverageInfoForClassWithoutSource(bundle: CoverageSuitesBundle, classFile: File): Boolean {
         // TODO check scope and source roots
         return true  // keep everything, sort it out later
     }
 
     // Implements API added in IDEA 14.1
-    override fun ignoreCoverageForClass(bundle: CoverageSuitesBundle, classFile: File): Boolean {
+    /*override*/ fun ignoreCoverageForClass(bundle: CoverageSuitesBundle, classFile: File): Boolean {
         // Ignore classes that only contain bridge methods delegating to package parts.
         if (looksLikePackageFacade(classFile)) {
             val classVFile = LocalFileSystem.getInstance().findFileByIoFile(classFile)
@@ -101,8 +103,8 @@ public class KotlinCoverageExtension(): JavaCoverageEngineExtension() {
                                     classFiles: MutableSet<File>): Boolean {
         if (srcFile is JetFile) {
             val fileIndex = ProjectRootManager.getInstance(srcFile.getProject()).getFileIndex()
-            if (fileIndex.isInLibraryClasses(srcFile.getVirtualFile()) ||
-                fileIndex.isInLibrarySource(srcFile.getVirtualFile())) {
+            if (fileIndex.isInLibraryClasses(srcFile.getVirtualFile()!!) ||
+                fileIndex.isInLibrarySource(srcFile.getVirtualFile()!!)) {
                 return false
             }
 
@@ -172,12 +174,12 @@ public class KotlinCoverageExtension(): JavaCoverageEngineExtension() {
             val module = ModuleUtilCore.findModuleForPsiElement(file)
             if (module == null) return null
             val fileIndex = ProjectRootManager.getInstance(file.getProject()).getFileIndex()
-            val inTests = fileIndex.isInTestSourceContent(file.getVirtualFile())
-            val compilerOutputExtension = CompilerModuleExtension.getInstance(module)
+            val inTests = fileIndex.isInTestSourceContent(file.getVirtualFile()!!)
+            val compilerOutputExtension = ModuleCompilerPathsManager.getInstance(module)
             return if (inTests)
-                compilerOutputExtension!!.getCompilerOutputPathForTests()
+                compilerOutputExtension.getCompilerOutput(TestContentFolderTypeProvider.getInstance())
             else
-                compilerOutputExtension!!.getCompilerOutputPath()
+                compilerOutputExtension.getCompilerOutput(ProductionContentFolderTypeProvider.getInstance())
         }
 
         private fun collectClassFilePrefixes(file: JetFile): Collection<String> {

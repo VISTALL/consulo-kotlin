@@ -25,8 +25,8 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ContentFolder;
 import com.intellij.openapi.roots.ModuleRootManager;
-import com.intellij.openapi.roots.SourceFolder;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -42,10 +42,12 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.dom.MavenDomUtil;
 import org.jetbrains.idea.maven.dom.model.*;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
-import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.jetbrains.kotlin.cli.common.KotlinVersion;
 import org.jetbrains.kotlin.idea.JetPluginUtil;
 import org.jetbrains.kotlin.idea.framework.ui.ConfigureDialogWithModulesAndVersion;
+import org.mustbe.consulo.roots.ContentFolderScopes;
+import org.mustbe.consulo.roots.impl.ProductionContentFolderTypeProvider;
+import org.mustbe.consulo.roots.impl.TestContentFolderTypeProvider;
 
 import java.util.List;
 
@@ -187,8 +189,8 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
         XmlTag sourcesTag = createTagIfNeeded(execution.getConfiguration(), "sourceDirs", "");
 
         for (ContentEntry contentEntry : ModuleRootManager.getInstance(module).getContentEntries()) {
-            SourceFolder[] folders = contentEntry.getSourceFolders();
-            for (SourceFolder sourceFolder : folders) {
+            ContentFolder[] folders = contentEntry.getFolders(ContentFolderScopes.all());
+            for (ContentFolder sourceFolder : folders) {
                 if (isRelatedSourceRoot(isTest, sourceFolder)) {
                     VirtualFile sourceFolderFile = sourceFolder.getFile();
                     if (sourceFolderFile != null) {
@@ -201,9 +203,9 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
         }
     }
 
-    private static boolean isRelatedSourceRoot(boolean isTest, SourceFolder folder) {
-        return isTest && folder.getRootType() == JavaSourceRootType.TEST_SOURCE ||
-               (!isTest && folder.getRootType() == JavaSourceRootType.SOURCE);
+    private static boolean isRelatedSourceRoot(boolean isTest, ContentFolder folder) {
+        return isTest && folder.getType() == TestContentFolderTypeProvider.getInstance() ||
+               (!isTest && folder.getType() == ProductionContentFolderTypeProvider.getInstance());
     }
 
     @Nullable

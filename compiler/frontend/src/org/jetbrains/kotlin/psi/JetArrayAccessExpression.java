@@ -51,7 +51,7 @@ public class JetArrayAccessExpression extends JetExpressionImpl implements JetRe
 
     @NotNull
     public JetContainerNode getIndicesNode() {
-        JetContainerNode indicesNode = findChildByType(JetNodeTypes.INDICES);
+        JetContainerNode indicesNode = (JetContainerNode) findChildByType(JetNodeTypes.INDICES);
         assert indicesNode != null : "Can't be null because of parser";
         return indicesNode;
     }

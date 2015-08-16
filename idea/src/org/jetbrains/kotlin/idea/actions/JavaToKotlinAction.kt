@@ -131,7 +131,7 @@ public class JavaToKotlinAction : AnAction() {
         val result = ArrayList<VirtualFile>()
         for ((psiFile, text) in javaFiles.zip(convertedTexts)) {
             val virtualFile = psiFile.getVirtualFile()
-            val fileName = uniqueKotlinFileName(virtualFile)
+            val fileName = uniqueKotlinFileName(virtualFile!!)
             try {
                 virtualFile.rename(this, fileName)
                 virtualFile.setBinaryContent(CharsetToolkit.getUtf8Bytes(text))

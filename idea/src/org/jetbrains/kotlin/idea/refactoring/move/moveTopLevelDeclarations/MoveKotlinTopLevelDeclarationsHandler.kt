@@ -20,21 +20,20 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.*
+import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiJavaPackage
+import com.intellij.psi.PsiReference
 import com.intellij.refactoring.JavaRefactoringSettings
 import com.intellij.refactoring.RefactoringBundle
 import com.intellij.refactoring.move.MoveCallback
 import com.intellij.refactoring.move.MoveHandlerDelegate
 import com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesImpl
-import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFilesOrDirectoriesUtil
 import com.intellij.refactoring.util.CommonRefactoringUtil
+import org.jetbrains.kotlin.idea.core.getPackage
 import org.jetbrains.kotlin.idea.core.refactoring.isInJavaSourceRoot
-import org.jetbrains.kotlin.idea.refactoring.move.*
 import org.jetbrains.kotlin.idea.refactoring.move.moveTopLevelDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.idea.core.getPackage
-import org.jetbrains.kotlin.idea.refactoring.move.guessNewFileName
-import java.util.HashSet
 import java.util.LinkedHashSet
 
 public class MoveKotlinTopLevelDeclarationsHandler : MoveHandlerDelegate() {
@@ -84,7 +83,7 @@ public class MoveKotlinTopLevelDeclarationsHandler : MoveHandlerDelegate() {
     }
 
     override fun isValidTarget(psiElement: PsiElement?, sources: Array<out PsiElement>): Boolean {
-        return psiElement is PsiPackage || (psiElement is PsiDirectory && psiElement.getPackage() != null) || psiElement is JetFile
+        return psiElement is PsiJavaPackage || (psiElement is PsiDirectory && psiElement.getPackage() != null) || psiElement is JetFile
     }
 
     override fun doMove(project: Project, elements: Array<out PsiElement>, targetContainer: PsiElement?, callback: MoveCallback?) {

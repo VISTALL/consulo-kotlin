@@ -603,7 +603,7 @@ class PartialBodyResolveFilter(
         fun lastMarkedStatement(block: JetBlockExpression, minLevel: MarkLevel): JetExpression? {
             val level = blockLevels[block] ?: MarkLevel.NONE
             if (level < minLevel) return null // optimization
-            return block.getLastChild().siblings(forward = false)
+            return block.getLastChild()!!.siblings(forward = false)
                     .filterIsInstance<JetExpression>()
                     .first { statementMark(it) >= minLevel }
         }

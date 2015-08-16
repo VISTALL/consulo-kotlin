@@ -17,7 +17,6 @@
 package org.jetbrains.kotlin.idea.quickfix
 
 import com.intellij.codeInsight.intention.IntentionAction
-import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.progress.ProcessCanceledException
@@ -25,7 +24,6 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.ui.UIUtil
 import org.jetbrains.kotlin.idea.project.PluginJetFilesProvider
@@ -34,7 +32,6 @@ import org.jetbrains.kotlin.idea.util.application.runReadAction
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.psi.JetElement
 import org.jetbrains.kotlin.psi.JetFile
-import org.jetbrains.kotlin.psi.JetVisitor
 import org.jetbrains.kotlin.psi.JetVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.flatMapDescendantsOfTypeVisitor
 import org.jetbrains.kotlin.utils.singletonOrEmptyList
@@ -59,7 +56,7 @@ public abstract class JetWholeProjectModalAction<TData : Any>(val title: String)
 
                         for ((i, currentFile) in files.withIndex()) {
                             indicator.setText("Checking file $i of ${files.size()}...")
-                            indicator.setText2(currentFile.getVirtualFile().getPath())
+                            indicator.setText2(currentFile.getVirtualFile()!!.getPath())
                             indicator.setFraction((i + 1) / files.size().toDouble())
                             try {
                                 val data = collectDataForFile(project, currentFile)

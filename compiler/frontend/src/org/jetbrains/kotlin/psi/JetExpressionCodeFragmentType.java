@@ -22,6 +22,7 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilderFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.LanguageVersionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.parsing.JetParser;
 import org.jetbrains.kotlin.psi.stubs.elements.JetFileElementType;
@@ -43,7 +44,9 @@ public class JetExpressionCodeFragmentType extends JetFileElementType {
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
         Project project = psi.getProject();
         Language languageForParser = getLanguageForParser(psi);
-        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser, chameleon.getChars());
+        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser,
+                                                                           LanguageVersionUtil.findDefaultVersion(languageForParser),
+                                                                           chameleon.getChars());
         return JetParser.parseExpressionCodeFragment(builder).getFirstChildNode();
     }
 }

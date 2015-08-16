@@ -32,8 +32,8 @@ import com.intellij.util.concurrency.Semaphore
 import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.impl.XDebugSessionImpl
 import com.intellij.xdebugger.impl.ui.tree.ValueMarkup
-import com.sun.jdi.ObjectReference
-import com.sun.jdi.Value
+import consulo.internal.com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi.Value
 import org.jetbrains.kotlin.asJava.KotlinLightClass
 import org.jetbrains.kotlin.idea.JetFileType
 import org.jetbrains.kotlin.idea.debugger.KotlinEditorTextProvider

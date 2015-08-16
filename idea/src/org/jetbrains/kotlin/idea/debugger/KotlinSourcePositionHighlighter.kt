@@ -21,7 +21,7 @@ import com.intellij.debugger.engine.SourcePositionHighlighter
 import com.intellij.openapi.util.TextRange
 import org.jetbrains.kotlin.psi.JetFunctionLiteral
 
-public class KotlinSourcePositionHighlighter: SourcePositionHighlighter() {
+public class KotlinSourcePositionHighlighter: SourcePositionHighlighter {
     override fun getHighlightRange(sourcePosition: SourcePosition?): TextRange? {
         val lambda = sourcePosition?.elementAt?.parent
         if (lambda is JetFunctionLiteral) {

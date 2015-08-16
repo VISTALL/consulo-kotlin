@@ -17,8 +17,8 @@
 package org.jetbrains.kotlin.idea.debugger.filter
 
 import com.intellij.debugger.engine.SyntheticTypeComponentProvider
-import com.sun.jdi.Method
-import com.sun.jdi.TypeComponent
+import consulo.internal.com.sun.jdi.Method
+import consulo.internal.com.sun.jdi.TypeComponent
 import org.jetbrains.kotlin.load.kotlin.PackageClassUtils
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.FqNameUnsafe

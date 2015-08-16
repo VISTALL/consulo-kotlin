@@ -4,12 +4,9 @@ import com.intellij.debugger.actions.SmartStepTarget
 import com.intellij.psi.PsiElement
 import com.intellij.util.Range
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
-import org.jetbrains.kotlin.idea.JetIcons
 import org.jetbrains.kotlin.idea.util.IdeDescriptorRenderers
 import org.jetbrains.kotlin.psi.JetElement
-import org.jetbrains.kotlin.psi.JetNamedFunction
 import org.jetbrains.kotlin.renderer.ParameterNameRenderingPolicy
-import javax.swing.Icon
 
 public class KotlinMethodSmartStepTarget(
         val resolvedElement: JetElement,
@@ -17,12 +14,13 @@ public class KotlinMethodSmartStepTarget(
         highlightElement: PsiElement,
         lines: Range<Int>
 ): SmartStepTarget(label, highlightElement, false, lines) {
-    override fun getIcon(): Icon? {
-        return when {
-            resolvedElement is JetNamedFunction && resolvedElement.getReceiverTypeReference() != null -> JetIcons.EXTENSION_FUNCTION
-            else -> JetIcons.FUNCTION
-        }
-    }
+    // TODO [VISTALL]
+    //override fun getIcon(): Icon? {
+    //    return when {
+    //        resolvedElement is JetNamedFunction && resolvedElement.getReceiverTypeReference() != null -> JetIcons.EXTENSION_FUNCTION
+    //        else -> JetIcons.FUNCTION
+    //    }
+    //}
 
     companion object {
         private val renderer = IdeDescriptorRenderers.SOURCE_CODE_SHORT_NAMES_IN_TYPES.withOptions {

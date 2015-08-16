@@ -22,7 +22,10 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import org.jetbrains.kotlin.name.FqNameUnsafe
 import org.jetbrains.kotlin.platform.JavaToKotlinClassMap
-import org.jetbrains.kotlin.psi.psiUtil.*
+import org.jetbrains.kotlin.psi.psiUtil.allChildren
+import org.jetbrains.kotlin.psi.psiUtil.elementsInRange
+import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
+import org.jetbrains.kotlin.psi.psiUtil.siblings
 import java.util.ArrayList
 
 data class DataForConversion private constructor(
@@ -36,14 +39,14 @@ data class DataForConversion private constructor(
             assert(startOffsets.size() == endOffsets.size(), "Must have the same size")
 
             var fileText = copiedCode.fileText
-            var file = PsiFileFactory.getInstance(project).createFileFromText(JavaLanguage.INSTANCE, fileText) as PsiJavaFile
+            var file = PsiFileFactory.getInstance(project).createFileFromText("dummy.java", JavaLanguage.INSTANCE, fileText) as PsiJavaFile
 
             val importsAndPackage = buildImportsAndPackage(file)
 
             val newFileText = clipTextIfNeeded(file, fileText, startOffsets, endOffsets)
             if (newFileText != null) {
                 fileText = newFileText
-                file = PsiFileFactory.getInstance(project).createFileFromText(JavaLanguage.INSTANCE, newFileText) as PsiJavaFile
+                file = PsiFileFactory.getInstance(project).createFileFromText("dummy.java", JavaLanguage.INSTANCE, newFileText) as PsiJavaFile
             }
 
             val elementsAndTexts = ArrayList<Any>()
@@ -135,7 +138,7 @@ data class DataForConversion private constructor(
 
         private fun PsiElement.minimizedTextRange(): TextRange {
             val firstChild = getFirstChild()?.siblings()?.firstOrNull { !canDropElementFromText(it) } ?: return range
-            val lastChild = getLastChild().siblings(forward = false).first { !canDropElementFromText(it) }
+            val lastChild = getLastChild()!!.siblings(forward = false).first { !canDropElementFromText(it) }
             return TextRange(firstChild.minimizedTextRange().start, lastChild.minimizedTextRange().end)
         }
 
@@ -170,7 +173,7 @@ data class DataForConversion private constructor(
         private fun tryClipRightSide(element: PsiElement, rightBound: Int): Int? {
             fun Int.transform() = Int.MAX_VALUE - this
             fun TextRange.transform() = TextRange(end.transform(), start.transform())
-            return tryClipSide(element, rightBound.transform(), { range.transform() }, { getLastChild().siblings(forward = false) })?.transform()
+            return tryClipSide(element, rightBound.transform(), { range.transform() }, { getLastChild()!!.siblings(forward = false) })?.transform()
         }
 
         private fun tryClipSide(

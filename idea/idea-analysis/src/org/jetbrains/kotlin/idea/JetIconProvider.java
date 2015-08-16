@@ -16,8 +16,8 @@
 
 package org.jetbrains.kotlin.idea;
 
-import com.intellij.ide.IconProvider;
-import com.intellij.openapi.project.DumbAware;
+import com.intellij.ide.IconDescriptor;
+import com.intellij.ide.IconDescriptorUpdater;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.text.StringUtil;
@@ -37,7 +37,7 @@ import org.jetbrains.kotlin.psi.*;
 import javax.swing.*;
 import java.util.List;
 
-public class JetIconProvider extends IconProvider implements DumbAware {
+public class JetIconProvider implements IconDescriptorUpdater {
 
     public static JetIconProvider INSTANCE = new JetIconProvider();
 
@@ -57,7 +57,6 @@ public class JetIconProvider extends IconProvider implements DumbAware {
         return null;
     }
 
-    @Override
     public Icon getIcon(@NotNull PsiElement psiElement, int flags) {
         if (psiElement instanceof JetFile) {
             JetFile file = (JetFile) psiElement;
@@ -172,5 +171,10 @@ public class JetIconProvider extends IconProvider implements DumbAware {
         }
 
         return null;
+    }
+
+    @Override
+    public void updateIcon(@NotNull IconDescriptor descriptor, @NotNull PsiElement element, int i) {
+
     }
 }

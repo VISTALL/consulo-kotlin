@@ -61,7 +61,7 @@ public open class JetClass : JetClassOrObject {
 
     public fun isInterface(): Boolean =
         getStub()?.isInterface()
-        ?: (findChildByType<PsiElement>(JetTokens.TRAIT_KEYWORD) != null || findChildByType<PsiElement>(JetTokens.INTERFACE_KEYWORD) != null)
+        ?: (findChildByType(JetTokens.TRAIT_KEYWORD) != null || findChildByType(JetTokens.INTERFACE_KEYWORD) != null)
 
     public fun isEnum(): Boolean = hasModifier(JetTokens.ENUM_KEYWORD)
     public fun isSealed(): Boolean = hasModifier(JetTokens.SEALED_KEYWORD)

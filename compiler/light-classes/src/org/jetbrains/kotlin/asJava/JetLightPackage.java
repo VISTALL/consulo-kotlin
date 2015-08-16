@@ -20,8 +20,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.file.PsiPackageImpl;
 import com.intellij.psi.search.GlobalSearchScope;
+import org.consulo.psi.PsiPackageManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.name.FqName;
+import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
 
 public class JetLightPackage extends PsiPackageImpl {
 
@@ -29,7 +31,7 @@ public class JetLightPackage extends PsiPackageImpl {
     private final GlobalSearchScope scope;
 
     public JetLightPackage(PsiManager manager, FqName qualifiedName, GlobalSearchScope scope) {
-        super(manager, qualifiedName.asString());
+        super(manager, PsiPackageManager.getInstance(manager.getProject()), JavaModuleExtension.class, qualifiedName.asString());
         this.fqName = qualifiedName;
         this.scope = scope;
     }

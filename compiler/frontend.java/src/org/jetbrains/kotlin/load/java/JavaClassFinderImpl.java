@@ -19,7 +19,7 @@ package org.jetbrains.kotlin.load.java;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiPackage;
+import com.intellij.psi.PsiJavaPackage;
 import com.intellij.psi.search.DelegatingGlobalSearchScope;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
@@ -105,7 +105,7 @@ public class JavaClassFinderImpl implements JavaClassFinder {
     @Nullable
     @Override
     public JavaPackage findPackage(@NotNull FqName fqName) {
-        PsiPackage psiPackage = javaFacade.findPackage(fqName.asString(), javaSearchScope);
+        PsiJavaPackage psiPackage = javaFacade.findPackage(fqName.asString(), javaSearchScope);
         return psiPackage == null ? null : new JavaPackageImpl(psiPackage, javaSearchScope);
     }
 }

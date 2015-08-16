@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isExtensionDeclaration
 import org.jetbrains.kotlin.resolve.jvm.JvmPrimitiveType
+import org.mustbe.consulo.java.util.JavaClassNames
 
 interface ExpressionConverter {
     fun convertExpression(expression: PsiExpression, codeConverter: CodeConverter): Expression
@@ -144,7 +145,7 @@ class DefaultExpressionConverter : JavaElementVisitor(), ExpressionConverter {
 
                 val equalsSignature = getEqualsSignature(converter.project, GlobalSearchScope.allScope(converter.project))
                 val equalsMethod = MethodSignatureUtil.findMethodBySignature(psiClass, equalsSignature, true)
-                if (equalsMethod != null && equalsMethod.getContainingClass()?.getQualifiedName() != CommonClassNames.JAVA_LANG_OBJECT) return false
+                if (equalsMethod != null && equalsMethod.getContainingClass()?.getQualifiedName() != JavaClassNames.JAVA_LANG_OBJECT) return false
 
                 return true
             }

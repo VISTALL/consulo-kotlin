@@ -52,7 +52,7 @@ abstract class JetSimpleNameExpressionImpl(node: ASTNode) : JetExpressionImpl(no
     //NOTE: an unfortunate way to share an implementation between stubbed and not stubbed tree
     companion object {
         fun getReferencedNameElementTypeImpl(expression: JetSimpleNameExpression): IElementType {
-            return expression.getReferencedNameElement().getNode()!!.getElementType()
+            return expression.getReferencedNameElement().getNode()!!.getElementType()!!
         }
 
         fun getReferencedNameAsNameImpl(expresssion: JetSimpleNameExpression): Name {

@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.idea.decompiler.navigation
 
+import com.intellij.openapi.vfs.ArchiveFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.name.ClassId
@@ -36,11 +37,11 @@ public object JsMetaFileUtils {
     public fun getModuleDirectory(file: VirtualFile): VirtualFile =
         getRoot(file).findChild(getModuleName(getRelativeToRootPath(file)))!!
 
-    private fun getRelativeToRootPath(file: VirtualFile): String = VfsUtilCore.getRelativePath(file, getRoot(file))!!
+    private fun getRelativeToRootPath(file: VirtualFile): String = VfsUtilCore.getRelativePath(file, getRoot(file), '/')!!
 
     private fun getClassFqName(relPath: String): FqName {
-        val pathToFile = relPath.substringAfter(VfsUtilCore.VFS_SEPARATOR_CHAR)
-        return FqName(pathToFile.substringBeforeLast('.').replace(VfsUtilCore.VFS_SEPARATOR_CHAR, '.'))
+        val pathToFile = relPath.substringAfter(ArchiveFileSystem.ARCHIVE_SEPARATOR)
+        return FqName(pathToFile.substringBeforeLast('.').replace(ArchiveFileSystem.ARCHIVE_SEPARATOR, "."))
     }
 
     private fun getClassId(relPath: String): ClassId {
@@ -52,14 +53,14 @@ public object JsMetaFileUtils {
     }
 
     private fun getPackageFqName(relPath: String): FqName {
-        val pathToFile = relPath.substringAfter(VfsUtilCore.VFS_SEPARATOR_CHAR)
+        val pathToFile = relPath.substringAfter(ArchiveFileSystem.ARCHIVE_SEPARATOR)
         if (isDefaultPackageMetafile(pathToFile)) return FqName.ROOT
 
-        val name = pathToFile.substringBeforeLast(VfsUtilCore.VFS_SEPARATOR_CHAR)
-        return FqName(name.replace(VfsUtilCore.VFS_SEPARATOR_CHAR, '.'))
+        val name = pathToFile.substringBeforeLast(ArchiveFileSystem.ARCHIVE_SEPARATOR)
+        return FqName(name.replace(ArchiveFileSystem.ARCHIVE_SEPARATOR,"."))
     }
 
-    private fun getModuleName(relPath: String): String = relPath.substringBefore(VfsUtilCore.VFS_SEPARATOR_CHAR)
+    private fun getModuleName(relPath: String): String = relPath.substringBefore(ArchiveFileSystem.ARCHIVE_SEPARATOR)
 
     private fun isPackageHeader(relPath: String): Boolean {
         val classFqName = JsMetaFileUtils.getClassFqName(relPath)

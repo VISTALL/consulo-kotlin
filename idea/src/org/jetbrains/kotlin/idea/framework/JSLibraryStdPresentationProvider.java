@@ -16,7 +16,6 @@
 
 package org.jetbrains.kotlin.idea.framework;
 
-import com.intellij.framework.library.LibraryVersionProperties;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryPresentationProvider;

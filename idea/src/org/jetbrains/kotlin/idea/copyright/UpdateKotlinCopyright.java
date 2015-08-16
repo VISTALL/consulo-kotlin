@@ -16,19 +16,22 @@
 
 package org.jetbrains.kotlin.idea.copyright;
 
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.maddyhome.idea.copyright.CopyrightProfile;
 import com.maddyhome.idea.copyright.psi.UpdatePsiFileCopyright;
+import org.jetbrains.annotations.NotNull;
+import org.mustbe.consulo.copyright.config.CopyrightFileConfig;
 
-class UpdateKotlinCopyright extends UpdatePsiFileCopyright {
+class UpdateKotlinCopyright extends UpdatePsiFileCopyright<CopyrightFileConfig> {
 
-    UpdateKotlinCopyright(Project project, Module module, VirtualFile root, CopyrightProfile copyrightProfile) {
-        super(project, module, root, copyrightProfile);
+    public UpdateKotlinCopyright(
+            @NotNull PsiFile psiFile,
+            @NotNull CopyrightProfile copyrightProfile
+    ) {
+        super(psiFile, copyrightProfile);
     }
 
     @Override

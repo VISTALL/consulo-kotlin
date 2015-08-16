@@ -47,7 +47,7 @@ public class JetNameReferenceExpression : JetExpressionImplStub<KotlinNameRefere
     }
 
     override fun getReferencedNameElement(): PsiElement {
-        val element = findChildByType<PsiElement>(NAME_REFERENCE_EXPRESSIONS) ?: return this
+        val element = findChildByType(NAME_REFERENCE_EXPRESSIONS) ?: return this
         return element
     }
 

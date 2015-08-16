@@ -18,8 +18,8 @@ package org.jetbrains.kotlin.idea.refactoring.fqName
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiJavaPackage
 import com.intellij.psi.PsiMember
-import com.intellij.psi.PsiPackage
 import org.jetbrains.kotlin.asJava.namedUnwrappedElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.isOneSegmentFQN
@@ -34,7 +34,7 @@ import org.jetbrains.kotlin.resolve.ImportPath
 public fun PsiElement.getKotlinFqName(): FqName? {
     val element = namedUnwrappedElement
     return when (element) {
-        is PsiPackage -> FqName(element.getQualifiedName())
+        is PsiJavaPackage -> FqName(element.getQualifiedName()!!)
         is PsiClass -> element.getQualifiedName()?.let { FqName(it) }
         is PsiMember -> (element : PsiMember).getName()?.let { name ->
             val prefix = element.getContainingClass()?.getQualifiedName()

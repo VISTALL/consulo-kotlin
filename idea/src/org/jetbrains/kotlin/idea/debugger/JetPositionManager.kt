@@ -29,10 +29,10 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.compiled.ClsFileImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.*
-import com.sun.jdi.AbsentInformationException
-import com.sun.jdi.Location
-import com.sun.jdi.ReferenceType
-import com.sun.jdi.request.ClassPrepareRequest
+import consulo.internal.com.sun.jdi.AbsentInformationException
+import consulo.internal.com.sun.jdi.Location
+import consulo.internal.com.sun.jdi.ReferenceType
+import consulo.internal.com.sun.jdi.request.ClassPrepareRequest
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.kotlin.codegen.AsmUtil
 import org.jetbrains.kotlin.codegen.ClassBuilderFactories
@@ -258,7 +258,7 @@ public class JetPositionManager(private val myDebugProcess: DebugProcess) : Mult
                     {
                         val typeMapper = createTypeMapper(file)
                         CachedValueProvider.Result<JetTypeMapper>(typeMapper, PsiModificationTracker.MODIFICATION_COUNT)
-                    }, false)
+                    }, false)!!
 
             myTypeMappers.put(key, value)
         }

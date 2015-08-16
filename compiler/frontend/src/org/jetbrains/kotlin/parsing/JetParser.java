@@ -17,6 +17,7 @@
 package org.jetbrains.kotlin.parsing;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.openapi.project.Project;
@@ -34,7 +35,7 @@ public class JetParser implements PsiParser {
 
     @Override
     @NotNull
-    public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder) {
+    public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder, LanguageVersion languageVersion) {
         throw new IllegalStateException("use another parse");
     }
 

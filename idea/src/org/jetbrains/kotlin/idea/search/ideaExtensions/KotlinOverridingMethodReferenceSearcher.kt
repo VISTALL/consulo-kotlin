@@ -16,22 +16,15 @@
 
 package org.jetbrains.kotlin.idea.search.ideaExtensions
 
-import com.intellij.openapi.application.QueryExecutorBase
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.search.MethodTextOccurrenceProcessor
 import com.intellij.psi.impl.search.MethodUsagesSearcher
-import com.intellij.psi.search.searches.MethodReferencesSearch
 import com.intellij.util.Processor
-import org.jetbrains.kotlin.asJava.KotlinLightMethod
 import org.jetbrains.kotlin.asJava.getRepresentativeLightMethod
-import org.jetbrains.kotlin.asJava.toLightMethods
 import org.jetbrains.kotlin.psi.JetCallableDeclaration
-import org.jetbrains.kotlin.psi.JetDeclaration
-import org.jetbrains.kotlin.psi.JetFunction
-import org.jetbrains.kotlin.psi.JetNamedDeclaration
 
 public class KotlinOverridingMethodReferenceSearcher : MethodUsagesSearcher() {
     override fun getTextOccurrenceProcessor(methods: Array<out PsiMethod>,

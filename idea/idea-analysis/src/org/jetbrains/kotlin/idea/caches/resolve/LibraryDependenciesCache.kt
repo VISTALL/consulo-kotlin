@@ -16,25 +16,18 @@
 
 package org.jetbrains.kotlin.idea.caches.resolve
 
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.roots.libraries.Library
-import com.intellij.util.containers.MultiMap
-import com.intellij.psi.util.CachedValuesManager
-import com.intellij.psi.util.CachedValueProvider
-import com.intellij.openapi.roots.ProjectRootModificationTracker
 import com.intellij.openapi.module.ModuleManager
-import com.intellij.openapi.roots.ModuleRootManager
-import com.intellij.openapi.roots.LibraryOrderEntry
-import com.intellij.openapi.roots.OrderEntry
-import com.intellij.openapi.roots.ModuleOrderEntry
-import com.intellij.openapi.util.Condition
-import java.util.LinkedHashSet
-import com.intellij.openapi.roots.RootPolicy
-import org.jetbrains.kotlin.utils.addIfNotNull
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.Sdk
-import com.intellij.openapi.roots.JdkOrderEntry
-import com.intellij.openapi.roots.ModuleSourceOrderEntry
+import com.intellij.openapi.roots.*
+import com.intellij.openapi.roots.libraries.Library
+import com.intellij.openapi.util.Condition
+import com.intellij.psi.util.CachedValueProvider
+import com.intellij.psi.util.CachedValuesManager
+import com.intellij.util.containers.MultiMap
+import org.jetbrains.kotlin.utils.addIfNotNull
+import java.util.LinkedHashSet
 
 public class LibraryDependenciesCache(private val project: Project) {
 
@@ -68,8 +61,8 @@ public class LibraryDependenciesCache(private val project: Project) {
                     return Unit
                 }
 
-                override fun visitJdkOrderEntry(jdkOrderEntry: JdkOrderEntry?, value: Unit?): Unit? {
-                    sdks.addIfNotNull(jdkOrderEntry?.getJdk())
+                override fun visitJdkOrderEntry(jdkOrderEntry: SdkOrderEntry?, value: Unit?): Unit? {
+                    sdks.addIfNotNull(jdkOrderEntry?.getSdk())
                     return Unit
                 }
             }, Unit)

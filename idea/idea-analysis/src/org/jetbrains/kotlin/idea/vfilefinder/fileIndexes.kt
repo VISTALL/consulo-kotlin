@@ -72,7 +72,7 @@ public object KotlinClassFileIndex : KotlinFileIndexBase<KotlinClassFileIndex>(j
 
     override fun getIndexer() = INDEXER
 
-    override fun getInputFilter() = FileBasedIndex.InputFilter { file -> file.getFileType() == JavaClassFileType.INSTANCE }
+    override fun getInputFilter() = FileBasedIndex.InputFilter { (project, file) -> file.getFileType() == JavaClassFileType.INSTANCE }
 
     override fun getVersion() = VERSION
 
@@ -88,7 +88,7 @@ public object KotlinJavaScriptMetaFileIndex : KotlinFileIndexBase<KotlinJavaScri
 
     override fun getIndexer() = INDEXER
 
-    override fun getInputFilter() = FileBasedIndex.InputFilter { file -> file.getFileType() == KotlinJavaScriptMetaFileType }
+    override fun getInputFilter() = FileBasedIndex.InputFilter { (project, file) -> file.getFileType() == KotlinJavaScriptMetaFileType }
 
     override fun getVersion() = VERSION
 

@@ -17,7 +17,6 @@
 package org.jetbrains.kotlin.idea.framework;
 
 import com.google.common.collect.Lists;
-import com.intellij.framework.library.LibraryVersionProperties;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -25,7 +24,6 @@ import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryKind;
 import com.intellij.openapi.roots.libraries.NewLibraryConfiguration;
-import com.intellij.openapi.roots.ui.configuration.libraries.CustomLibraryDescription;
 import com.intellij.openapi.roots.ui.configuration.libraries.LibraryPresentationManager;
 import com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditor;
 import com.intellij.openapi.util.io.FileUtil;
@@ -47,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public abstract class CustomLibraryDescriptorWithDeferredConfig extends CustomLibraryDescription {
+public abstract class CustomLibraryDescriptorWithDeferredConfig {
 
     private static final String DEFAULT_LIB_DIR_NAME = "lib";
 
@@ -88,7 +86,6 @@ public abstract class CustomLibraryDescriptorWithDeferredConfig extends CustomLi
     }
 
     @NotNull
-    @Override
     public Set<? extends LibraryKind> getSuitableLibraryKinds() {
         return suitableLibraryKinds;
     }
@@ -160,7 +157,6 @@ public abstract class CustomLibraryDescriptorWithDeferredConfig extends CustomLi
     }
 
     @Nullable
-    @Override
     public NewLibraryConfiguration createNewLibrary(@NotNull JComponent parentComponent, @Nullable VirtualFile contextDirectory) {
         KotlinWithLibraryConfigurator configurator =
                 (KotlinWithLibraryConfigurator) ConfigureKotlinInProjectUtils.getConfiguratorByName(configuratorName);

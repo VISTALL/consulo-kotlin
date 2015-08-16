@@ -20,8 +20,9 @@ import com.intellij.codeInsight.completion.*
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.patterns.PlatformPatterns
+import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.patterns.PsiJavaPatterns.elementType
-import com.intellij.patterns.PsiJavaPatterns.psiElement
+import com.intellij.patterns.PsiJavaPatterns.psiJavaElement
 import com.intellij.psi.*
 import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.tree.TokenSet
@@ -41,8 +42,8 @@ import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 public class KotlinCompletionContributor : CompletionContributor() {
-    private val AFTER_NUMBER_LITERAL = psiElement().afterLeafSkipping(psiElement().withText(""), psiElement().withElementType(elementType().oneOf(JetTokens.FLOAT_LITERAL, JetTokens.INTEGER_LITERAL)))
-    private val AFTER_INTEGER_LITERAL_AND_DOT = psiElement().afterLeafSkipping(psiElement().withText("."), psiElement().withElementType(elementType().oneOf(JetTokens.INTEGER_LITERAL)))
+    private val AFTER_NUMBER_LITERAL = psiJavaElement().afterLeafSkipping(psiJavaElement().withText(""), psiJavaElement().withElementType(elementType().oneOf(JetTokens.FLOAT_LITERAL, JetTokens.INTEGER_LITERAL)))
+    private val AFTER_INTEGER_LITERAL_AND_DOT = PsiJavaPatterns.psiJavaElement().afterLeafSkipping(psiJavaElement().withText("."), psiJavaElement().withElementType(elementType().oneOf(JetTokens.INTEGER_LITERAL)))
 
     companion object {
         public val DEFAULT_DUMMY_IDENTIFIER: String = CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED + "$" // add '$' to ignore context after the caret

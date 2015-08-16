@@ -22,17 +22,16 @@ import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationsConfiguration;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootAdapter;
 import com.intellij.openapi.roots.ModuleRootEvent;
-import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.newvfs.BulkFileListener;
 import com.intellij.openapi.vfs.newvfs.events.*;
 import com.intellij.util.Alarm;
-import com.intellij.util.PlatformUtils;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.idea.configuration.AbsentSdkAnnotationsNotificationManager;
@@ -40,6 +39,7 @@ import org.jetbrains.kotlin.idea.configuration.ConfigureKotlinInProjectUtils;
 import org.jetbrains.kotlin.idea.configuration.ui.notifications.NotificationsPackage;
 import org.jetbrains.kotlin.idea.project.ProjectStructureUtil;
 import org.jetbrains.kotlin.idea.versions.KotlinRuntimeLibraryUtil;
+import org.mustbe.consulo.java.module.extension.JavaModuleExtension;
 
 import java.util.Collection;
 import java.util.List;
@@ -128,7 +128,7 @@ public class AbsentJdkAnnotationsComponent extends AbstractProjectComponent {
         Set<Sdk> sdks = Sets.newHashSet();
         for (Module module : ConfigureKotlinInProjectUtils.getModulesWithKotlinFiles(myProject)) {
             if (ProjectStructureUtil.isJavaKotlinModule(module)) {
-                Sdk sdk = ModuleRootManager.getInstance(module).getSdk();
+                Sdk sdk = ModuleUtilCore.getSdk(module, JavaModuleExtension.class);
                 if (sdk != null && !areAnnotationsCorrect(sdk)) {
                     sdks.add(sdk);
                 }
@@ -151,6 +151,6 @@ public class AbsentJdkAnnotationsComponent extends AbstractProjectComponent {
     }
 
     private static boolean isAndroidStudio() {
-        return "AndroidStudio".equals(PlatformUtils.getPlatformPrefix());
+        return false;
     }
 }

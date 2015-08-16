@@ -17,6 +17,7 @@
 package org.jetbrains.kotlin.kdoc.parser;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
@@ -26,7 +27,7 @@ import org.jetbrains.kotlin.kdoc.lexer.KDocTokens;
 public class KDocParser implements PsiParser {
     @Override
     @NotNull
-    public ASTNode parse(IElementType root, PsiBuilder builder) {
+    public ASTNode parse(IElementType root, PsiBuilder builder, LanguageVersion languageVersion) {
         PsiBuilder.Marker rootMarker = builder.mark();
         if (builder.getTokenType() == KDocTokens.START) {
             builder.advanceLexer();

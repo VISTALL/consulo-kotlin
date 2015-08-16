@@ -17,28 +17,20 @@
 package org.jetbrains.kotlin.idea.findUsages
 
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
-import org.jetbrains.kotlin.psi.psiUtil.isAncestor
-import org.jetbrains.kotlin.lexer.JetTokens
-import org.jetbrains.kotlin.psi.psiUtil.getParentOfTypesAndPredicate
-import org.jetbrains.kotlin.descriptors.FunctionDescriptor
-import org.jetbrains.kotlin.resolve.BindingContext
-import org.jetbrains.kotlin.descriptors.ConstructorDescriptor
-import org.jetbrains.kotlin.descriptors.ClassifierDescriptor
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.PackageViewDescriptor
-import com.intellij.psi.PsiPackage
-import com.intellij.psi.PsiReferenceExpression
-import org.jetbrains.kotlin.descriptors.VariableDescriptor
-import org.jetbrains.kotlin.idea.findUsages.UsageTypeEnum.*
+import com.intellij.psi.PsiJavaPackage
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
-import org.jetbrains.kotlin.psi.psiUtil.getParentOfTypeAndBranch
+import org.jetbrains.kotlin.idea.findUsages.UsageTypeEnum.*
 import org.jetbrains.kotlin.idea.references.JetArrayAccessReference
 import org.jetbrains.kotlin.idea.references.JetInvokeFunctionReference
 import org.jetbrains.kotlin.idea.references.mainReference
-import org.jetbrains.kotlin.idea.references.unwrappedTargets
+import org.jetbrains.kotlin.lexer.JetTokens
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
+import org.jetbrains.kotlin.psi.psiUtil.getParentOfTypeAndBranch
+import org.jetbrains.kotlin.psi.psiUtil.getParentOfTypesAndPredicate
+import org.jetbrains.kotlin.psi.psiUtil.isAncestor
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.DescriptorUtils
 
 public object UsageTypeUtils {
@@ -216,7 +208,7 @@ public object UsageTypeUtils {
                 else -> getClassUsageType()
             }
             is PackageViewDescriptor -> {
-                if (refExpr.mainReference.resolve() is PsiPackage) getPackageUsageType() else getClassUsageType()
+                if (refExpr.mainReference.resolve() is PsiJavaPackage) getPackageUsageType() else getClassUsageType()
             }
             is VariableDescriptor -> getVariableUsageType()
             is FunctionDescriptor -> getFunctionUsageType(descriptor)

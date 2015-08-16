@@ -22,6 +22,7 @@ import com.intellij.util.IncorrectOperationException
 import org.jetbrains.kotlin.j2k.ast.*
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.siblings
+import org.mustbe.consulo.java.util.JavaClassNames
 
 class ForConverter(
         private val statement: PsiForStatement,
@@ -232,7 +233,7 @@ class ForConverter(
             if (methodExpr is PsiReferenceExpression && methodExpr.getReferenceName() == "size") {
                 val qualifier = methodExpr.getQualifierExpression()
                 if (qualifier is PsiReferenceExpression /* we don't convert to .indices if qualifier is method call or something because of possible side effects */) {
-                    val collectionType = PsiElementFactory.SERVICE.getInstance(project).createTypeByFQClassName(CommonClassNames.JAVA_UTIL_COLLECTION)
+                    val collectionType = PsiElementFactory.SERVICE.getInstance(project).createTypeByFQClassName(JavaClassNames.JAVA_UTIL_COLLECTION)
                     val qualifierType = qualifier.getType()
                     if (qualifierType != null && collectionType.isAssignableFrom(qualifierType)) {
                         indices = QualifiedExpression(codeConverter.convertExpression(qualifier), Identifier("indices", false).assignNoPrototype())

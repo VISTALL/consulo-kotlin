@@ -63,11 +63,12 @@ public class KotlinCallerChooser(
     override fun findDeepestSuperMethods(method: PsiElement) =
             method.toLightMethods().singleOrNull()?.findDeepestSuperMethods()
 
-    override fun getEmptyCallerText() =
+    //TODO [VISTALL]
+   /* override fun getEmptyCallerText() =
             "Caller text \nwith highlighted callee call would be shown here"
 
     override fun getEmptyCalleeText() =
-            "Callee text would be shown here"
+            "Callee text would be shown here"*/
 }
 
 public class KotlinMethodNode(

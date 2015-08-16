@@ -51,8 +51,8 @@ private fun orderEntryToModuleInfo(project: Project, orderEntry: OrderEntry, pro
             val library = orderEntry.getLibrary() ?: return listOf()
             emptyOrSingletonList(LibraryInfo(project, library))
         }
-        is JdkOrderEntry -> {
-            val sdk = orderEntry.getJdk() ?: return listOf()
+        is SdkOrderEntry -> {
+            val sdk = orderEntry.getSdk() ?: return listOf()
             emptyOrSingletonList(SdkInfo(project, sdk))
         }
         else -> {

@@ -18,9 +18,9 @@ package org.jetbrains.kotlin.idea.caches.resolve
 
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.JdkOrderEntry
 import com.intellij.openapi.roots.LibraryOrderEntry
 import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.roots.SdkOrderEntry
 import org.jetbrains.kotlin.analyzer.*
 import org.jetbrains.kotlin.context.GlobalContextImpl
 import org.jetbrains.kotlin.context.withProject
@@ -100,8 +100,8 @@ private fun collectAllModuleInfosFromIdeaModel(project: Project): List<IdeaModul
     val librariesInfos = ideaLibraries.map { LibraryInfo(project, it) }
 
     val ideaSdks = ideaModules.flatMap {
-        ModuleRootManager.getInstance(it).getOrderEntries().filterIsInstance<JdkOrderEntry>().map {
-            it.getJdk()
+        ModuleRootManager.getInstance(it).getOrderEntries().filterIsInstance<SdkOrderEntry>().map {
+            it.getSdk()
         }
     }.filterNotNull().toSet()
 

@@ -16,7 +16,7 @@
 
 package org.jetbrains.eval4j.jdi
 
-import com.sun.jdi
+import consulo.internal.com.sun.jdi
 import org.jetbrains.eval4j.*
 import org.jetbrains.org.objectweb.asm.Opcodes.ACC_STATIC
 import org.jetbrains.org.objectweb.asm.Type

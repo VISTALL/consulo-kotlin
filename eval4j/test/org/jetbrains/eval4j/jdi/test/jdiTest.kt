@@ -17,7 +17,7 @@
 package org.jetbrains.eval4j.jdi.test
 
 import org.jetbrains.eval4j.*
-import com.sun.jdi
+import consulo.internal.com.sun.jdi
 import junit.framework.TestSuite
 import org.jetbrains.eval4j.test.buildTestSuite
 import junit.framework.TestCase
@@ -29,7 +29,7 @@ import java.io.File
 import org.jetbrains.org.objectweb.asm.Opcodes
 import org.jetbrains.org.objectweb.asm.Type
 import org.jetbrains.eval4j.test.getTestName
-import com.sun.jdi.ObjectReference
+import consulo.internal.com.sun.jdi.ObjectReference
 
 val DEBUGEE_CLASS = javaClass<Debugee>()
 

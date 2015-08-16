@@ -21,7 +21,6 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.ide.browsers.BrowserLauncher;
 import com.intellij.ide.browsers.WebBrowser;
 import com.intellij.ide.browsers.WebBrowserManager;
-import com.intellij.openapi.compiler.CompilerPaths;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -29,9 +28,11 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import org.consulo.compiler.ModuleCompilerPathsManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.js.JavaScript;
+import org.mustbe.consulo.roots.impl.ProductionContentFolderTypeProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,8 @@ public final class K2JSRunnerUtils {
     @Nullable
     private static VirtualFile getOutputDir(@NotNull Project project) {
         Module module = getJsModule(project);
-        return CompilerPaths.getModuleOutputDirectory(module, /*forTests = */ false);
+        ModuleCompilerPathsManager manager = ModuleCompilerPathsManager.getInstance(module);
+        return manager.getCompilerOutput(ProductionContentFolderTypeProvider.getInstance());
     }
 
     @NotNull

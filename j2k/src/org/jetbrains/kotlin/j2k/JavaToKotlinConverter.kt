@@ -17,7 +17,6 @@
 package org.jetbrains.kotlin.j2k
 
 import com.intellij.lang.java.JavaLanguage
-import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.RangeMarker
 import com.intellij.openapi.progress.*
@@ -285,7 +284,7 @@ public class JavaToKotlinConverter(
                             progress?.checkCanceled()
                             progress?.setFraction(fraction + fractionPortion * i / fileCount)
 
-                            progress?.setText2(files!![i].getVirtualFile().getPresentableUrl())
+                            progress?.setText2(files!![i].getVirtualFile()!!.getPresentableUrl())
 
                             outputItems.add(processItem(item))
                         }

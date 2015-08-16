@@ -16,7 +16,7 @@
 
 package org.jetbrains.kotlin.idea.hierarchy;
 
-import com.intellij.codeInsight.TargetElementUtilBase;
+import com.intellij.codeInsight.TargetElementUtil;
 import com.intellij.ide.hierarchy.type.JavaTypeHierarchyProvider;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -56,7 +56,7 @@ public class KotlinTypeHierarchyProvider extends JavaTypeHierarchyProvider {
 
             if (!ProjectRootsUtil.isInProjectOrLibSource(file)) return null;
 
-            PsiElement target = TargetElementUtilBase.findTargetElement(editor, TargetElementUtilBase.getInstance().getAllAccepted());
+            PsiElement target = TargetElementUtil.findTargetElement(editor, TargetElementUtil.getAllAccepted());
 
             if (target instanceof PsiClass) {
                 return target;

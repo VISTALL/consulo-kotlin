@@ -16,8 +16,6 @@
 
 package org.jetbrains.kotlin.idea;
 
-import com.intellij.facet.Facet;
-import com.intellij.facet.FacetManager;
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.idea.configuration.JetModuleTypeManager;
@@ -27,11 +25,11 @@ public class JetModuleTypeManagerImpl extends JetModuleTypeManager {
     public boolean isAndroidGradleModule(@NotNull Module module) {
         // We don't want to depend on the Android-Gradle plugin
         // See com.android.tools.idea.gradle.util.Projects.isGradleProject()
-        for (Facet facet : FacetManager.getInstance(module).getAllFacets()) {
+        /*for (Facet facet : FacetManager.getInstance(module).getAllFacets()) {
             if (facet.getName().equals("Android-Gradle")) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
 }

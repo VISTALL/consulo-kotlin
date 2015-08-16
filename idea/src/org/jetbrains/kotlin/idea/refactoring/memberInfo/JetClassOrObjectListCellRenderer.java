@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.idea.refactoring.memberInfo;
 
+import com.intellij.ide.IconDescriptorUpdaters;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.ui.ListCellRendererWrapper;
 import org.jetbrains.kotlin.psi.JetClassOrObject;
@@ -28,9 +29,7 @@ public class JetClassOrObjectListCellRenderer extends ListCellRendererWrapper<Je
         if (value == null) return;
 
         setText(MemberInfoPackage.qualifiedNameForRendering(value));
-        Icon icon = value.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
-        if (icon != null) {
-            setIcon(icon);
-        }
+        Icon icon = IconDescriptorUpdaters.getIcon(value, Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
+        setIcon(icon);
     }
 }

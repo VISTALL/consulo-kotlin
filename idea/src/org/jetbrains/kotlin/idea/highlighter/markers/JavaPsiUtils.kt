@@ -17,7 +17,6 @@
 package org.jetbrains.kotlin.idea.highlighter.markers
 
 import com.intellij.openapi.progress.ProgressManager
-import com.intellij.psi.CommonClassNames
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
@@ -26,6 +25,7 @@ import org.jetbrains.kotlin.psi.JetClass
 import org.jetbrains.kotlin.psi.JetFunction
 import org.jetbrains.kotlin.psi.JetNamedFunction
 import org.jetbrains.kotlin.psi.JetSecondaryConstructor
+import org.mustbe.consulo.java.util.JavaClassNames
 import java.util.HashSet
 
 fun collectContainingClasses(methods: Collection<PsiMethod>): Set<PsiClass> {
@@ -33,7 +33,7 @@ fun collectContainingClasses(methods: Collection<PsiMethod>): Set<PsiClass> {
     for (method in methods) {
         ProgressManager.checkCanceled()
         val parentClass = method.getContainingClass()
-        if (parentClass != null && CommonClassNames.JAVA_LANG_OBJECT != parentClass.getQualifiedName()) {
+        if (parentClass != null && JavaClassNames.JAVA_LANG_OBJECT != parentClass.getQualifiedName()) {
             classes.add(parentClass)
         }
     }

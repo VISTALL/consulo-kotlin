@@ -20,8 +20,8 @@ import com.intellij.debugger.SourcePosition
 import com.intellij.debugger.engine.DebugProcessImpl
 import com.intellij.debugger.engine.NamedMethodFilter
 import com.intellij.util.Range
-import com.sun.jdi.Location
-import com.sun.jdi.Method
+import consulo.internal.com.sun.jdi.Location
+import consulo.internal.com.sun.jdi.Method
 import org.jetbrains.kotlin.asJava.LightClassUtil
 import org.jetbrains.kotlin.idea.util.application.runReadAction
 import org.jetbrains.kotlin.load.java.JvmAbi

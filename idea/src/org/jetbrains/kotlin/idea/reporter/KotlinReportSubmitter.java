@@ -17,14 +17,10 @@
 package org.jetbrains.kotlin.idea.reporter;
 
 import com.intellij.diagnostic.ITNReporter;
-import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 
 /**
  * We need to wrap ITNReporter for force showing or errors from kotlin plugin even from released version of IDEA.
  */
 public class KotlinReportSubmitter extends ITNReporter {
-    @Override
-    public boolean showErrorInRelease(IdeaLoggingEvent event) {
-        return true;
-    }
+
 }

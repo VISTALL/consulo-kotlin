@@ -1,19 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component name="libraryTable">
   <library name="idea-full">
     <ANNOTATIONS>
       <root url="file://$PROJECT_DIR$/annotations" />
-      <root url="jar://$PROJECT_DIR$/ideaSDK/sources/sources.jar!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/ideaSDK/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo/out/artifacts/distForRuntime/lib" />
+      <root url="jar://$PROJECT_DIR$/../../consulo/consulo/out/artifacts/distForRuntime/plugins/core/lib/core.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-java/out/artifacts/dist/java/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-xml/out/artifacts/dist/xml/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-spellchecker/out/artifacts/dist/spellchecker/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-groovy/out/artifacts/dist/groovy/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-maven/out/artifacts/dist/maven/lib" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-gradle/out/artifacts/dist/gradle/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/dependencies/guava-17.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/dependencies/asm5-src.zip!/" />
       <root url="jar://$PROJECT_DIR$/dependencies/cli-parser-1.1.1-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/ideaSDK/sources/sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../consulo/consulo-gradle/out/artifacts/dist/gradle/lib" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/ideaSDK/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-gradle/out/artifacts/dist/gradle/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-groovy/out/artifacts/dist/groovy/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-java/out/artifacts/dist/java/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-maven/out/artifacts/dist/maven/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-spellchecker/out/artifacts/dist/spellchecker/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-xml/out/artifacts/dist/xml/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo/out/artifacts/distForRuntime/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../consulo/consulo-gradle/out/artifacts/dist/gradle/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

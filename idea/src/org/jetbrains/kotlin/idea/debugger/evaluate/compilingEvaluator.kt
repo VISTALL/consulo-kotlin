@@ -22,7 +22,7 @@ import com.intellij.debugger.engine.evaluation.EvaluationContext
 import com.intellij.debugger.engine.evaluation.EvaluationContextImpl
 import com.intellij.openapi.projectRoots.JdkVersionUtil
 import com.intellij.openapi.util.SystemInfo
-import com.sun.jdi.ClassLoaderReference
+import consulo.internal.com.sun.jdi.ClassLoaderReference
 import org.jetbrains.kotlin.idea.debugger.evaluate.CompilingEvaluatorUtils
 
 public fun loadClasses(evaluationContext: EvaluationContextImpl, classes: Collection<Pair<String, ByteArray>>) {

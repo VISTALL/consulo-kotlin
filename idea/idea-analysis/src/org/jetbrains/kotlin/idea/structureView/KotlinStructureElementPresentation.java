@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.idea.structureView;
 
+import com.intellij.ide.IconDescriptorUpdaters;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.LocationPresentation;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
@@ -23,7 +24,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.NavigatablePsiElement;
-import com.intellij.util.PsiIconUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
@@ -114,7 +114,7 @@ class KotlinStructureElementPresentation implements ColoredItemPresentation, Loc
             return JetDescriptorIconProvider.getIcon(descriptor, navigatablePsiElement, Iconable.ICON_FLAG_VISIBILITY);
         }
 
-        return PsiIconUtil.getProvidersIcon(navigatablePsiElement, Iconable.ICON_FLAG_VISIBILITY);
+        return IconDescriptorUpdaters.getIcon(navigatablePsiElement, Iconable.ICON_FLAG_VISIBILITY);
     }
 
     @Nullable

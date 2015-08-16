@@ -17,7 +17,7 @@
 package org.jetbrains.kotlin.j2k
 
 import com.intellij.psi.*
-import com.intellij.psi.CommonClassNames.*
+import org.mustbe.consulo.java.util.JavaClassNames.*
 import org.jetbrains.kotlin.j2k.ast.*
 
 class CodeConverter(

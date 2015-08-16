@@ -175,9 +175,9 @@ public abstract class OverrideImplementMethodsHandler : LanguageCodeInsightActio
                 whiteSpace.delete()
 
                 val beforeSpace = factory.createWhiteSpace(beforeWhiteSpaceText)
-                insertAfter.parent.addAfter(beforeSpace, insertAfter)
+                insertAfter!!.parent.addAfter(beforeSpace, insertAfter)
 
-                return insertAfter.nextSibling
+                return insertAfter.nextSibling!!
             }
 
             return whiteSpace

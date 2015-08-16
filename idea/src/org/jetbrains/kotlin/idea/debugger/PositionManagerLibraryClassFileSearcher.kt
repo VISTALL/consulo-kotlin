@@ -16,30 +16,27 @@
 
 package org.jetbrains.kotlin.idea.debugger
 
-import com.intellij.psi.search.FilenameIndex
-import org.jetbrains.kotlin.load.kotlin.PackagePartClassUtils
-import org.jetbrains.kotlin.psi.JetElement
-import org.jetbrains.kotlin.serialization.jvm.JvmProtoBuf
-import org.jetbrains.kotlin.renderer.DescriptorRenderer
 import com.intellij.openapi.diagnostic.Logger
-import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
-import com.intellij.openapi.roots.libraries.LibraryUtil
 import com.intellij.openapi.module.impl.scopes.LibraryScope
+import com.intellij.openapi.module.impl.scopes.SdkScope
 import com.intellij.openapi.roots.LibraryOrderEntry
-import org.jetbrains.kotlin.psi.JetDeclaration
+import com.intellij.openapi.roots.ModuleExtensionWithSdkOrderEntry
+import com.intellij.openapi.roots.libraries.LibraryUtil
+import com.intellij.psi.search.FilenameIndex
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
+import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
-import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedCallableMemberDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.openapi.module.impl.scopes.JdkScope
-import com.intellij.openapi.roots.JdkOrderEntry
-import org.jetbrains.kotlin.psi.JetPsiUtil
-import org.jetbrains.kotlin.resolve.jvm.JvmClassName
-import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.idea.caches.resolve.resolveToDescriptor
-import com.intellij.util.indexing.FileBasedIndex
+import org.jetbrains.kotlin.load.kotlin.PackagePartClassUtils
+import org.jetbrains.kotlin.psi.JetDeclaration
+import org.jetbrains.kotlin.psi.JetElement
 import org.jetbrains.kotlin.psi.psiUtil.getElementTextWithContext
+import org.jetbrains.kotlin.renderer.DescriptorRenderer
+import org.jetbrains.kotlin.resolve.descriptorUtil.module
+import org.jetbrains.kotlin.resolve.jvm.JvmClassName
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedCallableMemberDescriptor
+import org.jetbrains.kotlin.serialization.jvm.JvmProtoBuf
 
 private val LOG = Logger.getInstance("org.jetbrains.kotlin.idea.debugger")
 
@@ -102,9 +99,12 @@ private fun findPackagePartFileNamesForElement(elementAt: JetElement): List<Stri
     val scope = if (libraryEntry is LibraryOrderEntry){
                     LibraryScope(project, libraryEntry.getLibrary() ?: throw AssertionError("Cannot find library for file ${file.getVirtualFile()?.getPath()}"))
                 }
-                else {
-                    JdkScope(project, libraryEntry as JdkOrderEntry)
+                else if(libraryEntry is ModuleExtensionWithSdkOrderEntry) {
+        SdkScope(project, libraryEntry)
                 }
+    else {
+        null
+    }
 
     val packagePartFiles = FilenameIndex.getAllFilenames(project).asSequence().filter {
                 it.startsWith(packagePartNameWoHash) && it.endsWith(".class") &&

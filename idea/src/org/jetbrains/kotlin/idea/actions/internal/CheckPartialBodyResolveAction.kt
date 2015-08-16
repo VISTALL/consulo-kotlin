@@ -19,7 +19,6 @@ package org.jetbrains.kotlin.idea.actions.internal
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diff.DiffManager
 import com.intellij.openapi.diff.SimpleContent
 import com.intellij.openapi.diff.SimpleDiffRequest
@@ -67,7 +66,7 @@ public class CheckPartialBodyResolveAction : AnAction() {
         val progressIndicator = ProgressManager.getInstance().getProgressIndicator()
         for ((i, file) in files.withIndex()) {
             progressIndicator?.setText("Checking resolve $i of ${files.size()}...")
-            progressIndicator?.setText2(file.getVirtualFile().getPath())
+            progressIndicator?.setText2(file.getVirtualFile()!!.getPath())
 
             val partialResolveDump = dumpResolve(file) { element, resolutionFacade ->
                 resolutionFacade.analyze(element, BodyResolveMode.PARTIAL)
@@ -77,7 +76,7 @@ public class CheckPartialBodyResolveAction : AnAction() {
             }
             if (partialResolveDump != goldDump) {
                 SwingUtilities.invokeLater {
-                    val title = "Difference Found in File ${file.getVirtualFile().getPath()}"
+                    val title = "Difference Found in File ${file.getVirtualFile()!!.getPath()}"
 
                     val request = SimpleDiffRequest(project, title)
                     request.setContents(SimpleContent(goldDump), SimpleContent(partialResolveDump))
@@ -107,7 +106,7 @@ public class CheckPartialBodyResolveAction : AnAction() {
     private fun dumpResolve(file: JetFile, resolver: (JetElement, ResolutionFacade) -> BindingContext): String {
         val builder = StringBuilder()
         val resolutionFacade = file.getResolutionFacade()
-        val document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile())!!
+        val document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile()!!)!!
         file.acceptChildren(object : JetVisitorVoid(){
             override fun visitJetElement(element: JetElement) {
                 ProgressManager.checkCanceled()

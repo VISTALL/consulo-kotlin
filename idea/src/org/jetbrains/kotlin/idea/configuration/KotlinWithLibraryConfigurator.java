@@ -19,7 +19,6 @@ package org.jetbrains.kotlin.idea.configuration;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.*;
 import com.intellij.openapi.roots.libraries.Library;
@@ -108,14 +107,9 @@ public abstract class KotlinWithLibraryConfigurator implements KotlinProjectConf
 
         // The first root modification enters dumb mode, and we need to be able to perform isKotlinLibrary() checks
         // after that, and those checks use findClass(). Therefore, we need to enable alternative resolve here.
-        DumbService.getInstance(project).withAlternativeResolveEnabled(new Runnable() {
-            @Override
-            public void run() {
-                for (Module module : finalModulesToConfigure) {
-                    configureModuleWithLibrary(module, defaultPathToJar, finalCopyLibraryIntoPath);
-                }
-            }
-        });
+        for (Module module : finalModulesToConfigure) {
+            configureModuleWithLibrary(module, defaultPathToJar, finalCopyLibraryIntoPath);
+        }
     }
 
     protected void configureModuleWithLibrary(

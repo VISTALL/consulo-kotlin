@@ -26,8 +26,8 @@ public abstract class JetExpressionImpl(node: ASTNode) : JetElementImpl(node), J
     override fun <R, D> accept(visitor: JetVisitor<R, D>, data: D) = visitor.visitExpression(this, data)
 
     protected fun findExpressionUnder(type: JetNodeType): JetExpression? {
-        val containerNode = findChildByType<JetContainerNode>(type) ?: return null
-        return containerNode.findChildByClass<JetExpression>(javaClass())
+        val containerNode : JetContainerNode = findChildByType(type) as? JetContainerNode ?: return null
+        return containerNode.findChildByClass(javaClass)
     }
 
     override fun replace(newElement: PsiElement): PsiElement {

@@ -16,18 +16,18 @@
 
 package org.jetbrains.kotlin.idea.editor.wordSelection
 
-import com.intellij.psi.PsiElement
+import com.intellij.codeInsight.editorActions.ExtendWordSelectionHandlerBase
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.util.TextRange
-import com.intellij.codeInsight.editorActions.ExtendWordSelectionHandlerBase
-import org.jetbrains.kotlin.psi.JetDeclaration
-import java.util.ArrayList
-import org.jetbrains.kotlin.psi.psiUtil.siblings
 import com.intellij.psi.PsiComment
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
+import org.jetbrains.kotlin.psi.JetDeclaration
 import org.jetbrains.kotlin.psi.JetMultiDeclaration
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
+import org.jetbrains.kotlin.psi.psiUtil.siblings
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
+import java.util.ArrayList
 
 public class KotlinDeclarationSelectioner : ExtendWordSelectionHandlerBase() {
     override fun canSelect(e: PsiElement)
@@ -40,12 +40,12 @@ public class KotlinDeclarationSelectioner : ExtendWordSelectionHandlerBase() {
 
         val result = ArrayList<TextRange>()
         val firstChild = e.getFirstChild()
-        val firstNonComment = firstChild
+        val firstNonComment = firstChild!!
                 .siblings(forward = true, withItself = true)
                 .first { it !is PsiComment && it !is PsiWhiteSpace }
 
         val lastChild = e.getLastChild()
-        val lastNonComment = lastChild
+        val lastNonComment = lastChild!!
                 .siblings(forward = false, withItself = true)
                 .first { it !is PsiComment && it !is PsiWhiteSpace }
 

@@ -131,14 +131,14 @@ private fun deleteElementWithDelimiters(element: PsiElement) {
     val from: PsiElement
     val to: PsiElement
     if (paramBefore != null) {
-        from = paramBefore.getNextSibling()
+        from = paramBefore.getNextSibling()!!
         to = element
     }
     else {
         val paramAfter = PsiTreeUtil.getNextSiblingOfType<PsiElement>(element, element.javaClass)
 
         from = element
-        to = if (paramAfter != null) paramAfter.getPrevSibling() else element
+        to = if (paramAfter != null) paramAfter.getPrevSibling()!! else element
     }
 
     val parent = element.getParent()

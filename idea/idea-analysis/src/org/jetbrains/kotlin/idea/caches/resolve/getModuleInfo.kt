@@ -16,18 +16,18 @@
 
 package org.jetbrains.kotlin.idea.caches.resolve
 
-import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.asJava.KotlinLightElement
-import org.jetbrains.kotlin.psi.*
-import com.intellij.openapi.roots.ProjectFileIndex
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.LibraryOrderEntry
-import com.intellij.openapi.roots.JdkOrderEntry
+import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.roots.ProjectFileIndex
+import com.intellij.openapi.roots.SdkOrderEntry
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.asJava.FakeLightClassForFileOfPackage
 import org.jetbrains.kotlin.asJava.KotlinLightClassForPackage
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.roots.ModuleRootManager
+import org.jetbrains.kotlin.asJava.KotlinLightElement
 import org.jetbrains.kotlin.idea.util.ProjectRootsUtil
+import org.jetbrains.kotlin.psi.*
 
 fun PsiElement.getModuleInfo(): IdeaModuleInfo {
     fun logAndReturnDefault(message: String): IdeaModuleInfo {
@@ -101,8 +101,8 @@ private fun getModuleInfoByVirtualFile(project: Project, virtualFile: VirtualFil
                     return LibrarySourceInfo(project, library)
                 }
             }
-            is JdkOrderEntry -> {
-                val sdk = orderEntry.getJdk() ?: continue@entries
+            is SdkOrderEntry -> {
+                val sdk = orderEntry.getSdk() ?: continue@entries
                 return SdkInfo(project, sdk)
             }
         }
@@ -112,7 +112,7 @@ private fun getModuleInfoByVirtualFile(project: Project, virtualFile: VirtualFil
 
 private fun KotlinLightElement<*, *>.getModuleInfoForLightElement(): IdeaModuleInfo {
     if (this is KotlinLightClassForDecompiledDeclaration) {
-        return getModuleInfoByVirtualFile(getProject(), getContainingFile().getVirtualFile(), false)
+        return getModuleInfoByVirtualFile(getProject(), getContainingFile().getVirtualFile()!!, false)
     }
     val element = getOrigin() ?: when (this) {
         is FakeLightClassForFileOfPackage -> this.getContainingFile()!!

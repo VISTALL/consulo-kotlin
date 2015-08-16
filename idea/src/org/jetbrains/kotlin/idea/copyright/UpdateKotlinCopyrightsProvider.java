@@ -16,17 +16,19 @@
 
 package org.jetbrains.kotlin.idea.copyright;
 
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
 import com.maddyhome.idea.copyright.CopyrightProfile;
-import com.maddyhome.idea.copyright.psi.UpdateCopyright;
-import com.maddyhome.idea.copyright.psi.UpdateCopyrightsProvider;
+import com.maddyhome.idea.copyright.psi.BaseUpdateCopyrightsProvider;
+import com.maddyhome.idea.copyright.psi.UpdatePsiFileCopyright;
+import org.jetbrains.annotations.NotNull;
+import org.mustbe.consulo.copyright.config.CopyrightFileConfig;
 
-public class UpdateKotlinCopyrightsProvider extends UpdateCopyrightsProvider {
+public class UpdateKotlinCopyrightsProvider extends BaseUpdateCopyrightsProvider {
+    @NotNull
     @Override
-    public UpdateCopyright createInstance(Project project, Module module, VirtualFile file, FileType base, CopyrightProfile options) {
-        return new UpdateKotlinCopyright(project, module, file, options);
+    public UpdatePsiFileCopyright<CopyrightFileConfig> createInstance(
+            @NotNull PsiFile file, @NotNull CopyrightProfile profile
+    ) {
+        return new UpdateKotlinCopyright(file, profile);
     }
 }

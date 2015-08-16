@@ -37,10 +37,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiPackage;
+import com.intellij.psi.*;
 import com.intellij.refactoring.listeners.RefactoringElementAdapter;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
 import kotlin.KotlinPackage;
@@ -245,8 +242,8 @@ public class JetRunConfiguration extends ModuleBasedConfiguration<RunConfigurati
         if (element instanceof JetDeclarationContainer) {
             fqNameBeingRenamed = KotlinRunConfigurationProducer.Companion.getStartClassFqName((JetDeclarationContainer) element);
         }
-        else if (element instanceof PsiPackage) {
-            fqNameBeingRenamed = new FqName(((PsiPackage) element).getQualifiedName());
+        else if (element instanceof PsiJavaPackage) {
+            fqNameBeingRenamed = new FqName(((PsiJavaPackage) element).getQualifiedName());
         }
         FqName ourClassName = new FqName(MAIN_CLASS_NAME);
         if (fqNameBeingRenamed != null && fqNameBeingRenamed.isAncestorOf(ourClassName)) {
@@ -290,8 +287,8 @@ public class JetRunConfiguration extends ModuleBasedConfiguration<RunConfigurati
     }
 
     private void updateMainClassNameWithSuffix(PsiElement element, String suffix) {
-        if (element instanceof PsiPackage) {
-            MAIN_CLASS_NAME = ((PsiPackage) element).getQualifiedName() + suffix;
+        if (element instanceof PsiJavaPackage) {
+            MAIN_CLASS_NAME = ((PsiJavaPackage) element).getQualifiedName() + suffix;
         }
     }
 

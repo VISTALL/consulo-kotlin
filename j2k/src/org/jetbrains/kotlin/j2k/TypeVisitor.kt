@@ -22,6 +22,7 @@ import com.intellij.psi.impl.source.PsiClassReferenceType
 import org.jetbrains.kotlin.j2k.ast.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.jvm.JvmPrimitiveType
+import org.mustbe.consulo.java.util.JavaClassNames
 
 private val PRIMITIVE_TYPES_NAMES = JvmPrimitiveType.values().map { it.getName() }
 
@@ -127,28 +128,28 @@ class TypeVisitor(
 
     companion object {
         private val toKotlinTypesMap: Map<String, String> = mapOf(
-                CommonClassNames.JAVA_LANG_OBJECT to "kotlin.Any",
-                CommonClassNames.JAVA_LANG_BYTE to "kotlin.Byte",
-                CommonClassNames.JAVA_LANG_CHARACTER to "kotlin.Char",
-                CommonClassNames.JAVA_LANG_DOUBLE to "kotlin.Double",
-                CommonClassNames.JAVA_LANG_FLOAT to "kotlin.Float",
-                CommonClassNames.JAVA_LANG_INTEGER to "kotlin.Int",
-                CommonClassNames.JAVA_LANG_LONG to "kotlin.Long",
-                CommonClassNames.JAVA_LANG_SHORT to "kotlin.Short",
-                CommonClassNames.JAVA_LANG_BOOLEAN to "kotlin.Boolean",
-                CommonClassNames.JAVA_LANG_ITERABLE to "kotlin.Iterable",
-                CommonClassNames.JAVA_UTIL_ITERATOR to "kotlin.Iterator",
-                CommonClassNames.JAVA_UTIL_LIST to "kotlin.List",
-                CommonClassNames.JAVA_UTIL_COLLECTION to "kotlin.Collection",
-                CommonClassNames.JAVA_UTIL_SET to "kotlin.Set",
-                CommonClassNames.JAVA_UTIL_MAP to "kotlin.Map"
+                JavaClassNames.JAVA_LANG_OBJECT to "kotlin.Any",
+                JavaClassNames.JAVA_LANG_BYTE to "kotlin.Byte",
+                JavaClassNames.JAVA_LANG_CHARACTER to "kotlin.Char",
+                JavaClassNames.JAVA_LANG_DOUBLE to "kotlin.Double",
+                JavaClassNames.JAVA_LANG_FLOAT to "kotlin.Float",
+                JavaClassNames.JAVA_LANG_INTEGER to "kotlin.Int",
+                JavaClassNames.JAVA_LANG_LONG to "kotlin.Long",
+                JavaClassNames.JAVA_LANG_SHORT to "kotlin.Short",
+                JavaClassNames.JAVA_LANG_BOOLEAN to "kotlin.Boolean",
+                JavaClassNames.JAVA_LANG_ITERABLE to "kotlin.Iterable",
+                JavaClassNames.JAVA_UTIL_ITERATOR to "kotlin.Iterator",
+                JavaClassNames.JAVA_UTIL_LIST to "kotlin.List",
+                JavaClassNames.JAVA_UTIL_COLLECTION to "kotlin.Collection",
+                JavaClassNames.JAVA_UTIL_SET to "kotlin.Set",
+                JavaClassNames.JAVA_UTIL_MAP to "kotlin.Map"
         )
 
         public val toKotlinMutableTypesMap: Map<String, String> = mapOf(
-                CommonClassNames.JAVA_UTIL_LIST to "kotlin.MutableList",
-                CommonClassNames.JAVA_UTIL_COLLECTION to "kotlin.MutableCollection",
-                CommonClassNames.JAVA_UTIL_SET to "kotlin.MutableSet",
-                CommonClassNames.JAVA_UTIL_MAP to "kotlin.MutableMap"
+                JavaClassNames.JAVA_UTIL_LIST to "kotlin.MutableList",
+                JavaClassNames.JAVA_UTIL_COLLECTION to "kotlin.MutableCollection",
+                JavaClassNames.JAVA_UTIL_SET to "kotlin.MutableSet",
+                JavaClassNames.JAVA_UTIL_MAP to "kotlin.MutableMap"
         )
     }
 }
